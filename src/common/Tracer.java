@@ -1,4 +1,5 @@
 package common;
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -13,13 +14,22 @@ public class Tracer{
 
 	public static Logger getLogger(@SuppressWarnings("rawtypes") Class c) {
 		Logger l = Logger.getLogger(c.getName());
+		
+		File f = new File("logs");
+		if(!f.exists()) {
+			f.mkdir();
+		}else if(!f.isDirectory()) {
+			f.mkdir();
+		}
+			
+		
 		if (handler == null) {
 			try {
 				handler = new FileHandler("logs/log.log", 4 * 1024 * 1024, 10, true);
 			} catch (SecurityException e) {
-				LOGGER.log(Level.SEVERE,"Error trying to get the file handler for Tracer.",e);
+				e.printStackTrace();
 			} catch (IOException e) {
-				LOGGER.log(Level.SEVERE,"Error trying to get the file handler for Tracer.",e);
+				e.printStackTrace();
 			}
 			handler.setFormatter(new SimpleFormatter());
 		}

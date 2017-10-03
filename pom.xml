@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>mbd_</groupId>
 	<artifactId>mbd_</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>MBD Project</name>
 	<description>MBD Project</description>
 	<build>
@@ -16,6 +16,118 @@
 					<source />
 					<target />
 				</configuration>
+			</plugin>
+
+			<!-- Copy project dependency -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-dependency-plugin</artifactId> 
+				<version>2.5.1</version> <executions> <execution> <id>copy-dependencies</id> 
+				<phase>package</phase> <goals> <goal>copy-dependencies</goal> </goals> <configuration> 
+				<includeScope>runtime</includeScope> <outputDirectory>${project.build.directory}/libs/</outputDirectory> 
+				</configuration> </execution> </executions> </plugin> -->
+
+
+			<!-- Make this jar executable -->
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-jar-plugin</artifactId> 
+				<configuration> <archive> <manifest> <addClasspath>true</addClasspath> <mainClass>enrollment.Main</mainClass> 
+				<classpathPrefix>libs/</classpathPrefix> </manifest> </archive> </configuration> 
+				</plugin> -->
+
+
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>enrollment_build</id>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>enrollment.Main</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>enrollment.jar</finalName>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>barcodescanner_build</id>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>barcodescanner.BarcodeScanner</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>barcodescanner.jar</finalName>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>rellotge_build</id>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>rellotge.Rellotge</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>rellotge.jar</finalName>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>sensorsync_build</id>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>sensorsync.Main</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>sensorsync.jar</finalName>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<plugin>
+				<artifactId>exec-maven-plugin</artifactId>
+				<groupId>org.codehaus.mojo</groupId>
+				<executions>
+					<execution><!-- Run our version calculation script -->
+						<id>Version Calculation</id>
+						<phase>package</phase>
+						<goals>
+							<goal>exec</goal>
+						</goals>
+						<configuration>
+							<executable>${basedir}/mvncompile/prepare_release.sh</executable>
+						</configuration>
+						
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
