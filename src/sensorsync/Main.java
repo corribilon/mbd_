@@ -16,6 +16,10 @@ import common.EncDec;
 import common.TestConnection;
 import common.Tracer;
 
+
+
+
+
 public class Main {
 
 	private static final Logger LOGGER = Tracer.getLogger(Main.class);
@@ -40,7 +44,9 @@ public class Main {
 		}
 		try {
 			updateSensorFlash(res);
-		} catch (IOException | InterruptedException e) {
+		} catch (IOException e) {
+			LOGGER.log(Level.SEVERE,"Error updating flash memory: "+e.toString(),e);
+		} catch (InterruptedException e) {
 			LOGGER.log(Level.SEVERE,"Error updating flash memory: "+e.toString(),e);
 		}
 	}

@@ -16,8 +16,10 @@ public class Tracer{
 		if (handler == null) {
 			try {
 				handler = new FileHandler("logs/log.log", 4 * 1024 * 1024, 10, true);
-			} catch (SecurityException | IOException e) {
-				e.printStackTrace();
+			} catch (SecurityException e) {
+				LOGGER.log(Level.SEVERE,"Error trying to get the file handler for Tracer.",e);
+			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE,"Error trying to get the file handler for Tracer.",e);
 			}
 			handler.setFormatter(new SimpleFormatter());
 		}

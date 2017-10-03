@@ -12,14 +12,8 @@ import common.TestConnection;
 import common.Tracer;
 
 public class DBSyncSensor extends MysqlManager {
-	
 
 	private static final Logger LOGGER = Tracer.getLogger(DBSyncSensor.class);
-
-	
-
-
-
 
 	public HashMap<String,ArrayList<Object>> getDatabaseRes(){
 		String sql = "SELECT r.*,d.`Nombre`, d.`Apellidos`, d.`foto`  FROM `01_tbl_rellotgenew` as r, `datos` as d WHERE d.`Id Matrícula`=r.iduser";
