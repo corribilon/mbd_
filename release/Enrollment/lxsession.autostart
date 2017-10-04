@@ -1,0 +1,12 @@
+@lxpanel --profile LXDE-pi
+@pcmanfm --desktop --profile LXDE-pi
+@lxterminal --command "/home/pi/Desktop/Enrollment/enrollment.sh"
+#------------ahorro de energía
+@xset s off
+@xset -dpms
+@xset s noblank
+@sed -i 's/"exited_cleanly": false/"exited_cleanly": true/' ~/.config/chromium/Default/Preferences
+#-------------fin ahorro energía
+
+# @chromium-browser --noerrdialogs --kiosk http://www.gestbdnc.com/bdncapac/graficos/produccion.php?seccion=Roca&autorefresh=1 --incognito
+
