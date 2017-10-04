@@ -18,9 +18,10 @@ import common.EncDec;
 import common.KeyLog;
 import common.TestConnection;
 import common.Tracer;
+import common.Validator;
 import common.Watchdog;
 
-public class BarcodeScanner {
+public class BarcodeScanner implements Validator{
 	
 	private static final Logger LOGGER = Tracer.getLogger(BarcodeScanner.class);
 	static Properties prop;
@@ -60,7 +61,7 @@ public class BarcodeScanner {
             System.exit(1);
         }
         
-        GlobalScreen.addNativeKeyListener(new KeyLog());
+        GlobalScreen.addNativeKeyListener(new KeyLog(new BarcodeScanner()));
 		
 		prop = getProperties();
 		
@@ -174,5 +175,21 @@ public class BarcodeScanner {
 		
 		return prop;
 	  }
+
+
+	public boolean isValid(Object o) {
+		// Must be an String
+		if (!(o instanceof String)) {
+			return false;
+		}
+		// Must be parseable into a long variable
+		try {
+			Long.parseLong((String) o);
+		} catch (NumberFormatException e) {
+			// Is not a number;
+			return false;
+		}
+		return true;
+	}
 
 }

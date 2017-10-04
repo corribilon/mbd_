@@ -87,7 +87,7 @@ try:
     ## print('SHA-2 hash of template: ' + hashlib.sha256(characterics).hexdigest())
     print('Characterics: ' + characterics)
     print('Hash: ' + hashlib.sha256(characterics).hexdigest())
-    print('End enrollment')
+    print('End enrollment')    
     if ( f.deleteTemplate(positionNumber) == True ):
         print('Template deleted')
 

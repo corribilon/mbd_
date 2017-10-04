@@ -3,7 +3,9 @@ package rellotge;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
 import java.util.Timer;
@@ -14,13 +16,15 @@ import java.util.logging.Logger;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 
+import common.BufferManager;
 import common.EncDec;
 import common.KeyLog;
 import common.TestConnection;
 import common.Tracer;
+import common.Validator;
 import common.Watchdog;
 
-public class Rellotge {
+public class Rellotge implements Validator{
 	
 	private static final Logger LOGGER = Tracer.getLogger(Rellotge.class);
 	static Properties prop;
@@ -34,18 +38,15 @@ public class Rellotge {
 	
 	static DBRellotge mm = null;
 	
-	private static ArrayList<String> movements;
-	
-	public final static int PUT = 1;
-	public final static int RETRIEVEALL = 2;
-	
 	public final static int NUM_LINIA = 1;
+	
+	private HashMap<String, Long> last5mins;
 
 	public static void main(String[] args) throws Exception {
 		
 		Tracer.setup();
 		
-		ThreadConsumer.loadBuffer();
+		BufferManager.loadBuffer();
 		// Get the logger for "org.jnativehook" and set the level to off.
         Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
         logger.setLevel(Level.OFF);
@@ -60,7 +61,8 @@ public class Rellotge {
             System.exit(1);
         }
         
-        GlobalScreen.addNativeKeyListener(new KeyLog());		
+        Rellotge r = new Rellotge();
+		GlobalScreen.addNativeKeyListener(new KeyLog(r));		
 		prop = getProperties();		
 		setUpProperties();
 		listen();		
@@ -129,46 +131,7 @@ public class Rellotge {
 			Watchdog.imAlive("main");
 		}
 		
-	}
-
-
-	public static synchronized Object movementsFunction(int order, Object params){		
-		if(order == PUT){
-			getMov().add((String)params);
-			updateBuffer();
-			return null;
-		}
-		if(order == RETRIEVEALL){
-			int s = getMov().size();
-			if(s<=0){
-				updateBuffer();
-				return null;
-			}
-			String[] toRet = new String[s];
-			for (int i = 0; i < s; i++)	toRet[i] = getMov().get(i);
-			getMov().clear();
-			updateBuffer();
-			return toRet;			
-		}		
-		return null;		
-	}
-	
-	
-	public static void updateBuffer(){
-		try {
-			ThreadConsumer.saveBuffer((String[])getMov().toArray());
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "Could not save into the buffer", e);
-		}
-	}
-	
-	
-	private static ArrayList<String> getMov(){
-		if(movements==null){
-			movements = new ArrayList<String>();
-		}
-		return movements;
-	}
+	}	
 	
 	
 	public static Properties getProperties() {		
@@ -183,4 +146,62 @@ public class Rellotge {
 		return prop;
 	  }
 
+	
+	private boolean isEntryOk(String labelId, long time) throws ParseException {
+
+		if (last5mins == null) {
+			last5mins = new HashMap<String, Long>();
+		}
+
+		// We update the status of the map removing all elements that are older
+		// than 5 minutes
+		ArrayList<String> keys = new ArrayList<String>(last5mins.keySet());
+		long timeMillis = time;
+		long minutes5ago = timeMillis - (10 * 60 * 1000);
+		// System.out.println("NOW: "+timeMillis);
+		// System.out.println("minutes5ago: "+minutes5ago);
+		for (String key : keys) {
+			long h = last5mins.get(key);
+			// System.out.println("KEY: "+key + " TIME: "+h);
+			if (h <= minutes5ago) {
+				// System.out.println("ELEMENTO CADUCADO h="+h+"
+				// minutes5ago="+minutes5ago+" ");
+				// El elemento esta caducado.
+				last5mins.remove(key);
+			}
+		}
+		// The map is already updated!
+
+		boolean toRet = !last5mins.containsKey(labelId);
+
+		last5mins.put(labelId, timeMillis);
+
+		// System.out.println("SE ACTUALIZA EL MAP CON LA NUEVA CLAVE");
+		// System.out.println(last5mins.get(labelId));
+
+		return toRet;
+	}
+
+
+	public boolean isValid(Object o) {
+		//Must be an String
+		if(!(o instanceof String)) {
+			return false;
+		}
+		//Must be parseable into a long variable
+		try {
+			Long.parseLong((String)o);
+		}catch (NumberFormatException e) {
+			//Is not a number;
+			return false;
+		}
+		//It must be not entered in the last 5 minutes		
+		try {
+			return isEntryOk((String)o, System.currentTimeMillis());
+		} catch (ParseException e) {
+			LOGGER.log(Level.SEVERE, "Error trying to check when was the last time the "+(String)o +" entry.", e);
+			return false;
+		}
+	}
+	
 }

@@ -1,3 +1,3 @@
 #!/bin/sh
-cd /home/pi/Desktop/rellotgeNEW
+cd /home/pi/Desktop/rellotge
 sudo java -jar scanner.jar

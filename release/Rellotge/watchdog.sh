@@ -7,7 +7,7 @@ do
 
 	reinit=0
 	varTest=""
-	for file in /home/pi/Desktop/rellotgeNEW/timers/*
+	for file in /home/pi/Desktop/rellotge/timers/*
 	do
 		# do something on $file
 		oldnum=`cat "$file"`
