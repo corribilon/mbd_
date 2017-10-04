@@ -40,3 +40,9 @@ find src/sensorsync/ -type f -not -name "*.java" | xargs -i cp {} release/Sensor
 mkdir release/SensorSync/logs
 
 
+# Create the zip files
+cd release
+find ./ -maxdepth 1 -type d | xargs -i zip -r {}.zip {}
+
+
+
