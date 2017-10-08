@@ -108,6 +108,24 @@
 							<goal>single</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>sensorsync_downloader_build</id>
+						<configuration>
+							<archive>
+								<manifest>
+									<mainClass>sensorsync.PhotoDownload</mainClass>
+								</manifest>
+							</archive>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<finalName>photodownload.jar</finalName>
+						</configuration>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
 				</executions>
 			</plugin>
 
@@ -125,7 +143,7 @@
 						<configuration>
 							<executable>${basedir}/mvncompile/prepare_release.sh</executable>
 						</configuration>
-						
+
 					</execution>
 				</executions>
 			</plugin>
@@ -151,6 +169,11 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.39</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>2.0</version>
 		</dependency>
 	</dependencies>
 </project>

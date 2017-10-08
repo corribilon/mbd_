@@ -35,6 +35,7 @@ mkdir release/Rellotge/logs
 
 mkdir release/SensorSync
 cp target/sensorsync.jar-jar-with-dependencies.jar release/SensorSync/sensorsync.jar
+cp target/photodownload.jar-jar-with-dependencies.jar release/SensorSync/photodownload.jar
 cp config.sensorsync.properties release/SensorSync/
 find src/sensorsync/ -type f -not -name "*.java" | xargs -i cp {} release/SensorSync/
 mkdir release/SensorSync/logs

@@ -752,3 +752,5 @@ Caused by: java.io.IOException: error=2, No existe el archivo o el directorio
 	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1029)
 	... 6 more
 
+oct 08, 2017 9:14:18 PM sensorsync.PhotoDownload main
+GRAVE: The file new photos directory couldnt be renamed. DELETED=false  RENAMED=false

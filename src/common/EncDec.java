@@ -9,24 +9,7 @@ public class EncDec {
 	private static final Logger LOGGER = Tracer.getLogger(EncDec.class);
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-		//Host martinezdonate
-//		test("caltorusr");
-//		test("quoderitis");
-//		test("caltorbbdd01");
-//		test("hl253.dinaserver.com");
-		
-		
-		//Host bdncapac
-//		test("caltorusr");
-//		test("quoderitis");
-//		test("caltorbbdd01");
-		test("hl22.dinaserver.com");
-		
-		
-
-		
+		test("Hello?¿?");		
 	}
 
 
