@@ -3,6 +3,7 @@ package rellotge;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import org.jnativehook.NativeHookException;
 import common.BufferManager;
 import common.EncDec;
 import common.KeyLog;
+import common.MysqlManager;
 import common.TestConnection;
 import common.Tracer;
 import common.Validator;
@@ -26,6 +28,7 @@ import common.Watchdog;
 
 public class Rellotge implements Validator{
 	
+	private static final int NUM_MINUTES_NEXT_READ = 10;
 	private static final Logger LOGGER = Tracer.getLogger(Rellotge.class);
 	static Properties prop;
 	
@@ -36,7 +39,7 @@ public class Rellotge implements Validator{
 	
 	private static int num_linia;
 	
-	static DBRellotge mm = null;
+	
 	
 	public final static int NUM_LINIA = 1;
 	
@@ -80,29 +83,23 @@ public class Rellotge implements Validator{
 	
 	
 	public static DBRellotge getMM(){
-		if(mm==null){
-			mm = new DBRellotge();
-			try {
-				if(TestConnection.isUp()){
-					if(mm.readDataBase(mysqluser, mysqlpassword, mysqldbname, mysqlip) == false){
-						mm = null;
-					}
-				}else{
-					mm = null;
-				}
-			} catch (Exception e) {
-	        	LOGGER.log(Level.WARNING, "There was a problem connecting to database. "+e.toString(), e);
-				mm = null;
+		Connection mm = null;
+		try {
+			if (TestConnection.isUp()) {
+				mm=MysqlManager.readDataBase(mysqluser, mysqlpassword, mysqldbname, mysqlip);
 			}
+		} catch (Exception e) {
+			LOGGER.log(Level.WARNING, "There was a problem connecting to database. " + e.toString(), e);	
 		}
-		return mm;
+		DBRellotge dbRellotge = null;	
+		if(mm!=null) {
+			dbRellotge = new DBRellotge(mm);	
+		}
+
+		return dbRellotge;
 	}
 	
-	public static void resetConnection() {
-		getMM().close();
-		mm = null;
-		getMM();
-	}
+
 	
 	
 	public static int getNumLinia(){return num_linia;}
@@ -157,7 +154,7 @@ public class Rellotge implements Validator{
 		// than 5 minutes
 		ArrayList<String> keys = new ArrayList<String>(last5mins.keySet());
 		long timeMillis = time;
-		long minutes5ago = timeMillis - (10 * 60 * 1000);
+		long minutes5ago = timeMillis - (NUM_MINUTES_NEXT_READ * 60 * 1000);
 		// System.out.println("NOW: "+timeMillis);
 		// System.out.println("minutes5ago: "+minutes5ago);
 		for (String key : keys) {
@@ -186,18 +183,24 @@ public class Rellotge implements Validator{
 	public boolean isValid(Object o) {
 		//Must be an String
 		if(!(o instanceof String)) {
+			LOGGER.log(Level.INFO, "The input "+o.toString() +" is not an string!");
 			return false;
 		}
 		//Must be parseable into a long variable
 		try {
 			Long.parseLong((String)o);
-		}catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			//Is not a number;
+			LOGGER.log(Level.INFO, "The input "+o.toString() +" is not a representable number!");
 			return false;
 		}
 		//It must be not entered in the last 5 minutes		
 		try {
-			return isEntryOk((String)o, System.currentTimeMillis());
+			boolean entryOk = isEntryOk((String)o, System.currentTimeMillis());
+			if(!entryOk) {
+				LOGGER.log(Level.INFO, "The input "+o.toString() +" was entered less than "+NUM_MINUTES_NEXT_READ+" minutes ago!");
+			}
+			return entryOk;
 		} catch (ParseException e) {
 			LOGGER.log(Level.SEVERE, "Error trying to check when was the last time the "+(String)o +" entry.", e);
 			return false;

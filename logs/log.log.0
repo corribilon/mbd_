@@ -1,0 +1,754 @@
+oct 05, 2017 12:07:40 PM common.KeyLog sendBuffer
+INFORMACIÓN: READ: 01753397/2017-10-05 12:07:40.270
+oct 05, 2017 12:07:40 PM common.KeyLog sendBuffer
+INFORMACIÓN: READ: 01753397/2017-10-05 12:07:40.270
+oct 05, 2017 12:07:47 PM common.KeyLog sendBuffer
+INFORMACIÓN: READ: 05261252/2017-10-05 12:07:47.126
+oct 05, 2017 12:07:47 PM common.KeyLog sendBuffer
+INFORMACIÓN: READ: 05261252/2017-10-05 12:07:47.126
+oct 05, 2017 12:08:07 PM common.KeyLog sendBuffer
+GRAVE: NOT VALID READ: 01753397 - Ignored...
+oct 05, 2017 12:08:07 PM common.KeyLog sendBuffer
+GRAVE: NOT VALID READ: 01753397 - Ignored...
+oct 05, 2017 12:08:11 PM common.KeyLog sendBuffer
+GRAVE: NOT VALID READ: 05261252 - Ignored...
+oct 05, 2017 12:08:11 PM common.KeyLog sendBuffer
+GRAVE: NOT VALID READ: 05261252 - Ignored...
+oct 05, 2017 12:11:25 PM common.KeyLog sendBuffer
+GRAVE: NOT VALID READ: 05261252 - Ignored...
+oct 05, 2017 12:11:25 PM common.KeyLog sendBuffer
+GRAVE: NOT VALID READ: 05261252 - Ignored...
+oct 05, 2017 12:12:09 PM common.KeyLog sendBuffer
+INFORMACIÓN: READ: 01753397/2017-10-05 12:12:09.958
+oct 05, 2017 12:12:09 PM common.KeyLog sendBuffer
+INFORMACIÓN: READ: 01753397/2017-10-05 12:12:09.958
+oct 05, 2017 12:12:12 PM common.KeyLog sendBuffer
+INFORMACIÓN: READ: 05261252/2017-10-05 12:12:12.557
+oct 05, 2017 12:12:12 PM common.KeyLog sendBuffer
+INFORMACIÓN: READ: 05261252/2017-10-05 12:12:12.557
+oct 05, 2017 12:14:06 PM rellotge.DBRellotge sendHeartBeat
+ADVERTENCIA: Error sending heartbeat java.lang.NullPointerException
+java.lang.NullPointerException
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:109)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:20)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+
+oct 05, 2017 12:43:44 PM rellotge.DBRellotge sendHeartBeat
+ADVERTENCIA: Error sending heartbeat com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet successfully received from the server was 47.354 milliseconds ago.  The last packet sent successfully to the server was 30.202 milliseconds ago.
+com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet successfully received from the server was 47.354 milliseconds ago.  The last packet sent successfully to the server was 30.202 milliseconds ago.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:988)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:3552)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:3452)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3893)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2526)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2673)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2545)
+	at com.mysql.jdbc.StatementImpl.executeUpdateInternal(StatementImpl.java:1540)
+	at com.mysql.jdbc.StatementImpl.executeLargeUpdate(StatementImpl.java:2595)
+	at com.mysql.jdbc.StatementImpl.executeUpdate(StatementImpl.java:1468)
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:104)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:20)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.net.SocketInputStream.socketRead0(Native Method)
+	at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+	at java.net.SocketInputStream.read(SocketInputStream.java:171)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at com.mysql.jdbc.util.ReadAheadInputStream.fill(ReadAheadInputStream.java:101)
+	at com.mysql.jdbc.util.ReadAheadInputStream.readFromUnderlyingStreamIfNecessary(ReadAheadInputStream.java:144)
+	at com.mysql.jdbc.util.ReadAheadInputStream.read(ReadAheadInputStream.java:174)
+	at com.mysql.jdbc.MysqlIO.readFully(MysqlIO.java:3001)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:3462)
+	... 12 more
+
+oct 05, 2017 12:46:37 PM rellotge.DBRellotge sendHeartBeat
+ADVERTENCIA: Error sending heartbeat com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.Util.getInstance(Util.java:387)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:917)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:896)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:885)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:860)
+	at com.mysql.jdbc.ConnectionImpl.throwConnectionClosedException(ConnectionImpl.java:1246)
+	at com.mysql.jdbc.ConnectionImpl.checkClosed(ConnectionImpl.java:1241)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2436)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2420)
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:103)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:20)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet successfully received from the server was 47.354 milliseconds ago.  The last packet sent successfully to the server was 30.202 milliseconds ago.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:988)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:3552)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:3452)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3893)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2526)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2673)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2545)
+	at com.mysql.jdbc.StatementImpl.executeUpdateInternal(StatementImpl.java:1540)
+	at com.mysql.jdbc.StatementImpl.executeLargeUpdate(StatementImpl.java:2595)
+	at com.mysql.jdbc.StatementImpl.executeUpdate(StatementImpl.java:1468)
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:104)
+	... 3 more
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.net.SocketInputStream.socketRead0(Native Method)
+	at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+	at java.net.SocketInputStream.read(SocketInputStream.java:171)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at com.mysql.jdbc.util.ReadAheadInputStream.fill(ReadAheadInputStream.java:101)
+	at com.mysql.jdbc.util.ReadAheadInputStream.readFromUnderlyingStreamIfNecessary(ReadAheadInputStream.java:144)
+	at com.mysql.jdbc.util.ReadAheadInputStream.read(ReadAheadInputStream.java:174)
+	at com.mysql.jdbc.MysqlIO.readFully(MysqlIO.java:3001)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:3462)
+	... 12 more
+
+oct 05, 2017 12:47:30 PM rellotge.DBRellotge sendHeartBeat
+ADVERTENCIA: Error sending heartbeat com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.Util.getInstance(Util.java:387)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:917)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:896)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:885)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:860)
+	at com.mysql.jdbc.ConnectionImpl.throwConnectionClosedException(ConnectionImpl.java:1246)
+	at com.mysql.jdbc.ConnectionImpl.checkClosed(ConnectionImpl.java:1241)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2436)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2420)
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:103)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:20)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet successfully received from the server was 47.354 milliseconds ago.  The last packet sent successfully to the server was 30.202 milliseconds ago.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:988)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:3552)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:3452)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3893)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2526)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2673)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2545)
+	at com.mysql.jdbc.StatementImpl.executeUpdateInternal(StatementImpl.java:1540)
+	at com.mysql.jdbc.StatementImpl.executeLargeUpdate(StatementImpl.java:2595)
+	at com.mysql.jdbc.StatementImpl.executeUpdate(StatementImpl.java:1468)
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:104)
+	... 3 more
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.net.SocketInputStream.socketRead0(Native Method)
+	at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+	at java.net.SocketInputStream.read(SocketInputStream.java:171)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at com.mysql.jdbc.util.ReadAheadInputStream.fill(ReadAheadInputStream.java:101)
+	at com.mysql.jdbc.util.ReadAheadInputStream.readFromUnderlyingStreamIfNecessary(ReadAheadInputStream.java:144)
+	at com.mysql.jdbc.util.ReadAheadInputStream.read(ReadAheadInputStream.java:174)
+	at com.mysql.jdbc.MysqlIO.readFully(MysqlIO.java:3001)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:3462)
+	... 12 more
+
+oct 05, 2017 1:19:27 PM rellotge.DBRellotge sendHeartBeat
+INFORMACIÓN: Communications Exception. com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet successfully received from the server was 47.752 milliseconds ago.  The last packet sent successfully to the server was 30.158 milliseconds ago.
+com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet successfully received from the server was 47.752 milliseconds ago.  The last packet sent successfully to the server was 30.158 milliseconds ago.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:988)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:3552)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:3452)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3893)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2526)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2673)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2545)
+	at com.mysql.jdbc.StatementImpl.executeUpdateInternal(StatementImpl.java:1540)
+	at com.mysql.jdbc.StatementImpl.executeLargeUpdate(StatementImpl.java:2595)
+	at com.mysql.jdbc.StatementImpl.executeUpdate(StatementImpl.java:1468)
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:104)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:20)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.net.SocketInputStream.socketRead0(Native Method)
+	at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+	at java.net.SocketInputStream.read(SocketInputStream.java:171)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at com.mysql.jdbc.util.ReadAheadInputStream.fill(ReadAheadInputStream.java:101)
+	at com.mysql.jdbc.util.ReadAheadInputStream.readFromUnderlyingStreamIfNecessary(ReadAheadInputStream.java:144)
+	at com.mysql.jdbc.util.ReadAheadInputStream.read(ReadAheadInputStream.java:174)
+	at com.mysql.jdbc.MysqlIO.readFully(MysqlIO.java:3001)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:3462)
+	... 12 more
+
+oct 05, 2017 1:19:28 PM rellotge.DBRellotge sendHeartBeat
+INFORMACIÓN: Resetting connection to DDBB.
+oct 05, 2017 1:20:14 PM common.MysqlManager readDataBase
+GRAVE: Error trying to to read the database.
+com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:988)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:341)
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2251)
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2284)
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2083)
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:806)
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:47)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:410)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:328)
+	at java.sql.DriverManager.getConnection(DriverManager.java:664)
+	at java.sql.DriverManager.getConnection(DriverManager.java:270)
+	at common.MysqlManager.readDataBase(MysqlManager.java:27)
+	at rellotge.Rellotge.getMM(Rellotge.java:87)
+	at rellotge.ThreadConsumer.run(ThreadConsumer.java:23)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+Caused by: java.net.UnknownHostException: hl22.dinaserver.com: Fallo temporal en la resolución del nombre
+	at java.net.Inet6AddressImpl.lookupAllHostAddr(Native Method)
+	at java.net.InetAddress$2.lookupAllHostAddr(InetAddress.java:928)
+	at java.net.InetAddress.getAddressesFromNameService(InetAddress.java:1323)
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1276)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1192)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1126)
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:188)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:300)
+	... 19 more
+
+oct 05, 2017 1:20:24 PM common.MysqlManager readDataBase
+GRAVE: Error trying to to read the database.
+com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:988)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:341)
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2251)
+	at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2284)
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2083)
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:806)
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:47)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:410)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:328)
+	at java.sql.DriverManager.getConnection(DriverManager.java:664)
+	at java.sql.DriverManager.getConnection(DriverManager.java:270)
+	at common.MysqlManager.readDataBase(MysqlManager.java:27)
+	at rellotge.Rellotge.getMM(Rellotge.java:87)
+	at rellotge.ThreadConsumer.run(ThreadConsumer.java:23)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+Caused by: java.net.UnknownHostException: hl22.dinaserver.com
+	at java.net.InetAddress.getAllByName0(InetAddress.java:1280)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1192)
+	at java.net.InetAddress.getAllByName(InetAddress.java:1126)
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:188)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:300)
+	... 19 more
+
+oct 05, 2017 1:22:16 PM rellotge.DBRellotge sendHeartBeat
+INFORMACIÓN: Communications Exception. com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet successfully received from the server was 93.499 milliseconds ago.  The last packet sent successfully to the server was 30.032 milliseconds ago.
+com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet successfully received from the server was 93.499 milliseconds ago.  The last packet sent successfully to the server was 30.032 milliseconds ago.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:988)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:3552)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:3452)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3893)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2526)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2673)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2545)
+	at com.mysql.jdbc.StatementImpl.executeUpdateInternal(StatementImpl.java:1540)
+	at com.mysql.jdbc.StatementImpl.executeLargeUpdate(StatementImpl.java:2595)
+	at com.mysql.jdbc.StatementImpl.executeUpdate(StatementImpl.java:1468)
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:104)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:20)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+Caused by: java.net.SocketTimeoutException: Read timed out
+	at java.net.SocketInputStream.socketRead0(Native Method)
+	at java.net.SocketInputStream.socketRead(SocketInputStream.java:116)
+	at java.net.SocketInputStream.read(SocketInputStream.java:171)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at com.mysql.jdbc.util.ReadAheadInputStream.fill(ReadAheadInputStream.java:101)
+	at com.mysql.jdbc.util.ReadAheadInputStream.readFromUnderlyingStreamIfNecessary(ReadAheadInputStream.java:144)
+	at com.mysql.jdbc.util.ReadAheadInputStream.read(ReadAheadInputStream.java:174)
+	at com.mysql.jdbc.MysqlIO.readFully(MysqlIO.java:3001)
+	at com.mysql.jdbc.MysqlIO.reuseAndReadPacket(MysqlIO.java:3462)
+	... 12 more
+
+oct 05, 2017 1:22:17 PM rellotge.DBRellotge sendHeartBeat
+INFORMACIÓN: Resetting connection to DDBB.
+oct 05, 2017 2:05:01 PM rellotge.DBRellotge sendHeartBeat
+INFORMACIÓN: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.Util.getInstance(Util.java:387)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:917)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:896)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:885)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:860)
+	at com.mysql.jdbc.ConnectionImpl.throwConnectionClosedException(ConnectionImpl.java:1246)
+	at com.mysql.jdbc.ConnectionImpl.checkClosed(ConnectionImpl.java:1241)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2436)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2420)
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:101)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:21)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+
+oct 05, 2017 2:06:00 PM rellotge.DBRellotge sendHeartBeat
+INFORMACIÓN: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.Util.getInstance(Util.java:387)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:917)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:896)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:885)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:860)
+	at com.mysql.jdbc.ConnectionImpl.throwConnectionClosedException(ConnectionImpl.java:1246)
+	at com.mysql.jdbc.ConnectionImpl.checkClosed(ConnectionImpl.java:1241)
+	at com.mysql.jdbc.ConnectionImpl.versionMeetsMinimum(ConnectionImpl.java:5229)
+	at com.mysql.jdbc.ConnectionImpl.serverSupportsConvertFn(ConnectionImpl.java:4774)
+	at com.mysql.jdbc.StatementImpl.executeUpdateInternal(StatementImpl.java:1488)
+	at com.mysql.jdbc.StatementImpl.executeLargeUpdate(StatementImpl.java:2595)
+	at com.mysql.jdbc.StatementImpl.executeUpdate(StatementImpl.java:1468)
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:102)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:21)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+
+oct 05, 2017 2:09:35 PM common.Tracer$MyUncaughtExceptionHandler uncaughtException
+GRAVE: java.lang.NullPointerException
+java.lang.NullPointerException
+	at rellotge.Rellotge.resetConnection(Rellotge.java:103)
+	at rellotge.ThreadConsumer.run(ThreadConsumer.java:20)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+
+oct 05, 2017 2:10:39 PM common.Tracer$MyUncaughtExceptionHandler uncaughtException
+GRAVE: java.lang.NullPointerException
+java.lang.NullPointerException
+	at rellotge.Rellotge.resetConnection(Rellotge.java:103)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:17)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+
+oct 05, 2017 2:12:09 PM rellotge.DBRellotge sendHeartBeat
+INFORMACIÓN: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.Util.getInstance(Util.java:387)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:917)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:896)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:885)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:860)
+	at com.mysql.jdbc.ConnectionImpl.throwConnectionClosedException(ConnectionImpl.java:1246)
+	at com.mysql.jdbc.ConnectionImpl.checkClosed(ConnectionImpl.java:1241)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2436)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2420)
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:101)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:21)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+
+oct 05, 2017 2:13:36 PM rellotge.DBRellotge sendHeartBeat
+INFORMACIÓN: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.Util.getInstance(Util.java:387)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:917)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:896)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:885)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:860)
+	at com.mysql.jdbc.ConnectionImpl.throwConnectionClosedException(ConnectionImpl.java:1246)
+	at com.mysql.jdbc.ConnectionImpl.checkClosed(ConnectionImpl.java:1241)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2436)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2420)
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:101)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:21)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+
+oct 05, 2017 2:16:20 PM rellotge.DBRellotge sendHeartBeat
+INFORMACIÓN: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.Util.getInstance(Util.java:387)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:917)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:896)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:885)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:860)
+	at com.mysql.jdbc.ConnectionImpl.throwConnectionClosedException(ConnectionImpl.java:1246)
+	at com.mysql.jdbc.ConnectionImpl.checkClosed(ConnectionImpl.java:1241)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2436)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2420)
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:101)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:21)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+
+oct 05, 2017 2:41:56 PM rellotge.DBRellotge sendHeartBeat
+INFORMACIÓN: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.Util.getInstance(Util.java:387)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:917)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:896)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:885)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:860)
+	at com.mysql.jdbc.ConnectionImpl.throwConnectionClosedException(ConnectionImpl.java:1246)
+	at com.mysql.jdbc.ConnectionImpl.checkClosed(ConnectionImpl.java:1241)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2436)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2420)
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:101)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:21)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+
+oct 05, 2017 2:42:50 PM rellotge.DBRellotge sendHeartBeat
+INFORMACIÓN: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.Util.getInstance(Util.java:387)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:917)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:896)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:885)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:860)
+	at com.mysql.jdbc.ConnectionImpl.throwConnectionClosedException(ConnectionImpl.java:1246)
+	at com.mysql.jdbc.ConnectionImpl.checkClosed(ConnectionImpl.java:1241)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2436)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2420)
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:101)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:21)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+
+oct 05, 2017 2:44:03 PM rellotge.DBRellotge sendHeartBeat
+INFORMACIÓN: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.Util.getInstance(Util.java:387)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:917)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:896)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:885)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:860)
+	at com.mysql.jdbc.ConnectionImpl.throwConnectionClosedException(ConnectionImpl.java:1246)
+	at com.mysql.jdbc.ConnectionImpl.checkClosed(ConnectionImpl.java:1241)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2436)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2420)
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:101)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:21)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+
+oct 05, 2017 2:48:28 PM rellotge.Rellotge isValid
+INFORMACIÓN: The input x is not a representable number!
+oct 05, 2017 2:48:28 PM common.KeyLog sendBuffer
+GRAVE: NOT VALID READ: x - Ignored...
+oct 05, 2017 2:48:28 PM common.KeyLog sendBuffer
+GRAVE: NOT VALID READ: x - Ignored...
+oct 05, 2017 2:52:06 PM rellotge.DBRellotge sendHeartBeat
+INFORMACIÓN: com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: No operations allowed after connection closed.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:404)
+	at com.mysql.jdbc.Util.getInstance(Util.java:387)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:917)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:896)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:885)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:860)
+	at com.mysql.jdbc.ConnectionImpl.throwConnectionClosedException(ConnectionImpl.java:1246)
+	at com.mysql.jdbc.ConnectionImpl.checkClosed(ConnectionImpl.java:1241)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2436)
+	at com.mysql.jdbc.ConnectionImpl.createStatement(ConnectionImpl.java:2420)
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:101)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:21)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+
+oct 05, 2017 3:09:49 PM rellotge.DBRellotge sendHeartBeat
+ADVERTENCIA: Error sending heartbeat java.lang.NullPointerException
+java.lang.NullPointerException
+	at rellotge.DBRellotge.sendHeartBeat(DBRellotge.java:110)
+	at rellotge.TimerHeartbeat.run(TimerHeartbeat.java:21)
+	at java.util.TimerThread.mainLoop(Timer.java:555)
+	at java.util.TimerThread.run(Timer.java:505)
+
+oct 05, 2017 3:15:01 PM rellotge.Rellotge isValid
+INFORMACIÓN: The input  is not a representable number!
+oct 05, 2017 3:15:01 PM common.KeyLog sendBuffer
+GRAVE: NOT VALID READ:  - Ignored...
+oct 05, 2017 3:15:01 PM common.KeyLog sendBuffer
+GRAVE: NOT VALID READ:  - Ignored...
+oct 05, 2017 3:15:36 PM rellotge.Rellotge isValid
+INFORMACIÓN: The input  is not a representable number!
+oct 05, 2017 3:15:36 PM common.KeyLog sendBuffer
+GRAVE: NOT VALID READ:  - Ignored...
+oct 05, 2017 3:15:36 PM common.KeyLog sendBuffer
+GRAVE: NOT VALID READ:  - Ignored...
+oct 08, 2017 4:47:48 PM sensorsync.Main run
+GRAVE: Error updating flash memory: java.io.IOException: Cannot run program "./test.sh/deleteAll.py": error=2, No existe el archivo o el directorio
+java.io.IOException: Cannot run program "./test.sh/deleteAll.py": error=2, No existe el archivo o el directorio
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1048)
+	at java.lang.Runtime.exec(Runtime.java:620)
+	at java.lang.Runtime.exec(Runtime.java:450)
+	at java.lang.Runtime.exec(Runtime.java:347)
+	at sensorsync.Main.updateSensorFlash(Main.java:54)
+	at sensorsync.Main.run(Main.java:45)
+	at sensorsync.Main.main(Main.java:88)
+Caused by: java.io.IOException: error=2, No existe el archivo o el directorio
+	at java.lang.UNIXProcess.forkAndExec(Native Method)
+	at java.lang.UNIXProcess.<init>(UNIXProcess.java:247)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:134)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1029)
+	... 6 more
+
+oct 08, 2017 4:59:01 PM sensorsync.Main run
+GRAVE: Error updating flash memory: java.io.IOException: Cannot run program "./test.sh/deleteAll.py": error=2, No existe el archivo o el directorio
+java.io.IOException: Cannot run program "./test.sh/deleteAll.py": error=2, No existe el archivo o el directorio
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1048)
+	at java.lang.Runtime.exec(Runtime.java:620)
+	at java.lang.Runtime.exec(Runtime.java:450)
+	at java.lang.Runtime.exec(Runtime.java:347)
+	at sensorsync.Main.updateSensorFlash(Main.java:54)
+	at sensorsync.Main.run(Main.java:45)
+	at sensorsync.Main.main(Main.java:88)
+Caused by: java.io.IOException: error=2, No existe el archivo o el directorio
+	at java.lang.UNIXProcess.forkAndExec(Native Method)
+	at java.lang.UNIXProcess.<init>(UNIXProcess.java:247)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:134)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1029)
+	... 6 more
+
+oct 08, 2017 5:01:16 PM sensorsync.Main run
+GRAVE: Error updating flash memory: java.io.IOException: Cannot run program "./test.sh/deleteAll.py": error=2, No existe el archivo o el directorio
+java.io.IOException: Cannot run program "./test.sh/deleteAll.py": error=2, No existe el archivo o el directorio
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1048)
+	at java.lang.Runtime.exec(Runtime.java:620)
+	at java.lang.Runtime.exec(Runtime.java:450)
+	at java.lang.Runtime.exec(Runtime.java:347)
+	at sensorsync.Main.updateSensorFlash(Main.java:54)
+	at sensorsync.Main.run(Main.java:45)
+	at sensorsync.Main.main(Main.java:88)
+Caused by: java.io.IOException: error=2, No existe el archivo o el directorio
+	at java.lang.UNIXProcess.forkAndExec(Native Method)
+	at java.lang.UNIXProcess.<init>(UNIXProcess.java:247)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:134)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1029)
+	... 6 more
+
+oct 08, 2017 5:01:35 PM sensorsync.Main run
+GRAVE: Error updating flash memory: java.io.IOException: Cannot run program "./test.sh/deleteAll.py": error=2, No existe el archivo o el directorio
+java.io.IOException: Cannot run program "./test.sh/deleteAll.py": error=2, No existe el archivo o el directorio
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1048)
+	at java.lang.Runtime.exec(Runtime.java:620)
+	at java.lang.Runtime.exec(Runtime.java:450)
+	at java.lang.Runtime.exec(Runtime.java:347)
+	at sensorsync.Main.updateSensorFlash(Main.java:54)
+	at sensorsync.Main.run(Main.java:45)
+	at sensorsync.Main.main(Main.java:88)
+Caused by: java.io.IOException: error=2, No existe el archivo o el directorio
+	at java.lang.UNIXProcess.forkAndExec(Native Method)
+	at java.lang.UNIXProcess.<init>(UNIXProcess.java:247)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:134)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1029)
+	... 6 more
+
+oct 08, 2017 5:06:57 PM sensorsync.Main run
+GRAVE: Error updating flash memory: java.io.IOException: Cannot run program "./test.sh/deleteAll.py": error=2, No existe el archivo o el directorio
+java.io.IOException: Cannot run program "./test.sh/deleteAll.py": error=2, No existe el archivo o el directorio
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1048)
+	at java.lang.Runtime.exec(Runtime.java:620)
+	at java.lang.Runtime.exec(Runtime.java:450)
+	at java.lang.Runtime.exec(Runtime.java:347)
+	at sensorsync.Main.updateSensorFlash(Main.java:54)
+	at sensorsync.Main.run(Main.java:45)
+	at sensorsync.Main.main(Main.java:88)
+Caused by: java.io.IOException: error=2, No existe el archivo o el directorio
+	at java.lang.UNIXProcess.forkAndExec(Native Method)
+	at java.lang.UNIXProcess.<init>(UNIXProcess.java:247)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:134)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1029)
+	... 6 more
+
+oct 08, 2017 6:16:35 PM sensorsync.Main run
+GRAVE: Error updating flash memory: java.io.IOException: Cannot run program "./test.shdeleteAll.py": error=2, No existe el archivo o el directorio
+java.io.IOException: Cannot run program "./test.shdeleteAll.py": error=2, No existe el archivo o el directorio
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1048)
+	at java.lang.Runtime.exec(Runtime.java:620)
+	at java.lang.Runtime.exec(Runtime.java:450)
+	at java.lang.Runtime.exec(Runtime.java:347)
+	at sensorsync.Main.updateSensorFlash(Main.java:59)
+	at sensorsync.Main.run(Main.java:48)
+	at sensorsync.Main.main(Main.java:115)
+Caused by: java.io.IOException: error=2, No existe el archivo o el directorio
+	at java.lang.UNIXProcess.forkAndExec(Native Method)
+	at java.lang.UNIXProcess.<init>(UNIXProcess.java:247)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:134)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1029)
+	... 6 more
+
+oct 08, 2017 6:25:35 PM sensorsync.Main run
+GRAVE: Error updating flash memory: java.io.IOException: Cannot run program "./test.shdeleteAll.py": error=2, No existe el archivo o el directorio
+java.io.IOException: Cannot run program "./test.shdeleteAll.py": error=2, No existe el archivo o el directorio
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1048)
+	at java.lang.Runtime.exec(Runtime.java:620)
+	at java.lang.Runtime.exec(Runtime.java:450)
+	at java.lang.Runtime.exec(Runtime.java:347)
+	at sensorsync.Main.updateSensorFlash(Main.java:59)
+	at sensorsync.Main.run(Main.java:48)
+	at sensorsync.Main.main(Main.java:116)
+Caused by: java.io.IOException: error=2, No existe el archivo o el directorio
+	at java.lang.UNIXProcess.forkAndExec(Native Method)
+	at java.lang.UNIXProcess.<init>(UNIXProcess.java:247)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:134)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1029)
+	... 6 more
+
+oct 08, 2017 6:28:58 PM sensorsync.Main run
+GRAVE: Error updating flash memory: java.io.IOException: Cannot run program "./test.shdeleteAll.py": error=2, No existe el archivo o el directorio
+java.io.IOException: Cannot run program "./test.shdeleteAll.py": error=2, No existe el archivo o el directorio
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1048)
+	at java.lang.Runtime.exec(Runtime.java:620)
+	at java.lang.Runtime.exec(Runtime.java:450)
+	at java.lang.Runtime.exec(Runtime.java:347)
+	at sensorsync.Main.updateSensorFlash(Main.java:59)
+	at sensorsync.Main.run(Main.java:48)
+	at sensorsync.Main.main(Main.java:116)
+Caused by: java.io.IOException: error=2, No existe el archivo o el directorio
+	at java.lang.UNIXProcess.forkAndExec(Native Method)
+	at java.lang.UNIXProcess.<init>(UNIXProcess.java:247)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:134)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1029)
+	... 6 more
+
+oct 08, 2017 6:34:34 PM sensorsync.Main run
+GRAVE: Error updating flash memory: java.io.IOException: Cannot run program "./test.shdeleteAll.py": error=2, No existe el archivo o el directorio
+java.io.IOException: Cannot run program "./test.shdeleteAll.py": error=2, No existe el archivo o el directorio
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1048)
+	at java.lang.Runtime.exec(Runtime.java:620)
+	at java.lang.Runtime.exec(Runtime.java:450)
+	at java.lang.Runtime.exec(Runtime.java:347)
+	at sensorsync.Main.updateSensorFlash(Main.java:59)
+	at sensorsync.Main.run(Main.java:48)
+	at sensorsync.Main.main(Main.java:116)
+Caused by: java.io.IOException: error=2, No existe el archivo o el directorio
+	at java.lang.UNIXProcess.forkAndExec(Native Method)
+	at java.lang.UNIXProcess.<init>(UNIXProcess.java:247)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:134)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1029)
+	... 6 more
+
+oct 08, 2017 6:44:04 PM sensorsync.Main run
+GRAVE: Error updating flash memory: java.io.IOException: Cannot run program "./test.shdeleteAll.py": error=2, No existe el archivo o el directorio
+java.io.IOException: Cannot run program "./test.shdeleteAll.py": error=2, No existe el archivo o el directorio
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1048)
+	at java.lang.Runtime.exec(Runtime.java:620)
+	at java.lang.Runtime.exec(Runtime.java:450)
+	at java.lang.Runtime.exec(Runtime.java:347)
+	at sensorsync.Main.updateSensorFlash(Main.java:59)
+	at sensorsync.Main.run(Main.java:48)
+	at sensorsync.Main.main(Main.java:117)
+Caused by: java.io.IOException: error=2, No existe el archivo o el directorio
+	at java.lang.UNIXProcess.forkAndExec(Native Method)
+	at java.lang.UNIXProcess.<init>(UNIXProcess.java:247)
+	at java.lang.ProcessImpl.start(ProcessImpl.java:134)
+	at java.lang.ProcessBuilder.start(ProcessBuilder.java:1029)
+	... 6 more
+

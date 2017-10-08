@@ -1,23 +1,24 @@
 package sensorsync;
 
-import java.io.BufferedReader;
+
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+
 import common.EncDec;
+import common.MysqlManager;
 import common.TestConnection;
 import common.Tracer;
-
-
-
 
 
 public class Main {
@@ -36,40 +37,18 @@ public class Main {
 	
 	public void run() {
 		DBSyncSensor mm = getMM();
-		HashMap<String,ArrayList<Object>> res = mm.getDatabaseRes();
+		HashMap<String,ArrayList<String>> res = mm.getDatabaseRes();
 		try {
 			bulkResIntoFile(res);
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, e.toString(), e);
 		}
-		try {
-			updateSensorFlash(res);
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE,"Error updating flash memory: "+e.toString(),e);
-		} catch (InterruptedException e) {
-			LOGGER.log(Level.SEVERE,"Error updating flash memory: "+e.toString(),e);
-		}
-	}
-
-	private void updateSensorFlash(HashMap<String, ArrayList<Object>> res) throws IOException, InterruptedException {
-		Process p = Runtime.getRuntime().exec(pathToCommand+"/deleteAll.py");
-		BufferedReader stdInput = new BufferedReader(new InputStreamReader(
-				p.getInputStream()));
-
-		BufferedReader stdError = new BufferedReader(new InputStreamReader(
-				p.getErrorStream()));
-		p.waitFor();
 		
-		p = Runtime.getRuntime().exec(pathToCommand+"/upload_characterics.py");
-		stdInput = new BufferedReader(new InputStreamReader(
-				p.getInputStream()));
-
-		stdError = new BufferedReader(new InputStreamReader(
-				p.getErrorStream()));
-		p.waitFor();
 	}
 
-	private void bulkResIntoFile(HashMap<String, ArrayList<Object>> res) throws IOException {
+
+
+	private void bulkResIntoFile(HashMap<String, ArrayList<String>> res) throws IOException {
 		File f = new File("localDB.ldb");
 		if(!f.exists()){
 			f.createNewFile();
@@ -78,8 +57,9 @@ public class Main {
 		ArrayList<String> it = new ArrayList<String>(res.keySet());
 		String line = "";
 		for (String key : it) {
-			line = key+";";
-			line = line + it.toString();
+			line = res.get(key).get(2);
+			line = line + ";" + key + ";";
+			line = line + res.get(key).toString();			
 			pw.println(line);
 		}
 		pw.close();
@@ -93,30 +73,25 @@ public class Main {
 		prop = new Properties();
 		prop.load(new FileInputStream(new File("config.sensorsync.properties")));
 		setUpProperties();
+		new Main().run();
 	}
 
 	
-	public static DBSyncSensor getMM() {
-		if (mm == null) {
-			mm = new DBSyncSensor();
-			try {
-				if (TestConnection.isUp()) {
-					if (mm.readDataBase(mysqluser, mysqlpassword, mysqldbname,
-							mysqlip) == false) {
-						mm = null;
-					}
-				} else {
-					mm = null;
-				}
-			} catch (Exception e) {
-				LOGGER.log(
-						Level.WARNING,
-						"There was a problem connecting to database. "
-								+ e.toString(), e);
-				mm = null;
+	public static DBSyncSensor getMM(){
+		Connection mm = null;
+		try {
+			if (TestConnection.isUp()) {
+				mm=MysqlManager.readDataBase(mysqluser, mysqlpassword, mysqldbname, mysqlip);
 			}
+		} catch (Exception e) {
+			LOGGER.log(Level.WARNING, "There was a problem connecting to database. " + e.toString(), e);	
 		}
-		return mm;
+		DBSyncSensor dbRellotge = null;	
+		if(mm!=null) {
+			dbRellotge = new DBSyncSensor(mm);	
+		}
+
+		return dbRellotge;
 	}
 
 	private static void setUpProperties() {

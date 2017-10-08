@@ -19,11 +19,8 @@ public class ThreadConsumer extends TimerTask{
 	@Override
 	public void run() {
 		Watchdog.imAlive("consumer");
-		DBBarcodescanner mm;
-		
-		String[] res = null;
-		
-		
+		DBBarcodescanner mm;		
+		String[] res = null;		
 		mm = BarcodeScanner.getMM();
 		res = (String[])BarcodeScanner.movementsFunction(BarcodeScanner.RETRIEVEALL, null);
 		try {
@@ -38,10 +35,8 @@ public class ThreadConsumer extends TimerTask{
 				for (int i = 0; i < res.length; i++) {
 					BarcodeScanner.movementsFunction(BarcodeScanner.PUT, res[i]);
 				}
-			}
-			
-		}
-		
+			}			
+		}		
 	}
 	
 	

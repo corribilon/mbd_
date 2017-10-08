@@ -3,6 +3,7 @@ package barcodescanner;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -16,10 +17,12 @@ import org.jnativehook.NativeHookException;
 
 import common.EncDec;
 import common.KeyLog;
+import common.MysqlManager;
 import common.TestConnection;
 import common.Tracer;
 import common.Validator;
 import common.Watchdog;
+
 
 public class BarcodeScanner implements Validator{
 	
@@ -68,8 +71,6 @@ public class BarcodeScanner implements Validator{
 		setUpProperties();
 		listen();
 		
-		
-		
 	}
 
 
@@ -84,29 +85,23 @@ public class BarcodeScanner implements Validator{
 	
 	
 	public static DBBarcodescanner getMM(){
-		if(mm==null){
-			mm = new DBBarcodescanner();
-			try {
-				if(TestConnection.isUp()){
-					if(mm.readDataBase(mysqluser, mysqlpassword, mysqldbname, mysqlip) == false){
-						mm = null;
-					}
-				}else{
-					mm = null;
-				}
-			} catch (Exception e) {
-				LOGGER.log(Level.WARNING, "There was a problem connecting to database. "+e.toString(), e);
-				mm = null;
+		Connection mm = null;
+		try {
+			if (TestConnection.isUp()) {
+				mm=MysqlManager.readDataBase(mysqluser, mysqlpassword, mysqldbname, mysqlip);
 			}
+		} catch (Exception e) {
+			LOGGER.log(Level.WARNING, "There was a problem connecting to database. " + e.toString(), e);	
 		}
-		return mm;
+		DBBarcodescanner dbRellotge = null;	
+		if(mm!=null) {
+			dbRellotge = new DBBarcodescanner(mm);	
+		}
+
+		return dbRellotge;
 	}
 	
-	public static void resetConnection() {
-		getMM().close();
-		mm = null;
-		getMM();
-	}
+
 	
 	public static int getNumLinia(){return num_linia;}
 	

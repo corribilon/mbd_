@@ -1,2 +1,4 @@
 eclipse.preferences.version=1
 encoding//src/enrollment/example_enroll.py=utf-8
+encoding//src/sensorsync/deleteAll.py=utf-8
+encoding//src/sensorsync/upload_characterics.py=utf-8

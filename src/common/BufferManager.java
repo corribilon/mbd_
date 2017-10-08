@@ -116,7 +116,7 @@ public class BufferManager {
 	 */
 	public static void updateBuffer() {
 		try {
-			saveBuffer((String[]) getMov().toArray());
+			saveBuffer((String[]) getMov().toArray(new String[getMov().size()]));
 		} catch (IOException e) {
 			LOGGER.log(Level.SEVERE, "Could not save into the buffer", e);
 		}

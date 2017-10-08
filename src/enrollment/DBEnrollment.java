@@ -1,7 +1,8 @@
 package enrollment;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
-
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -10,6 +11,10 @@ import common.TestConnection;
 import common.Tracer;
 
 public class DBEnrollment extends MysqlManager{
+
+	public DBEnrollment(Connection mm) {
+		super(mm);
+	}
 
 	private static final Logger LOGGER = Tracer.getLogger(DBEnrollment.class);	
 
@@ -26,9 +31,8 @@ public class DBEnrollment extends MysqlManager{
 
 		try {
 			if (TestConnection.isUp()) {
-				statement = connect.createStatement();
+				Statement statement = connect.createStatement();
 				statement.executeUpdate(sql);
-
 			} else {
 				System.out
 						.println("No Connection to DDBB. Sending result to the buffer.");
@@ -51,7 +55,7 @@ public class DBEnrollment extends MysqlManager{
 
 		try {
 			if (TestConnection.isUp()) {
-				statement = connect.createStatement();
+				Statement statement = connect.createStatement();
 				ResultSet rs = statement.executeQuery(sql);
 
 				if (rs.first()) {

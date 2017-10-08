@@ -5,12 +5,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Connection;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 import common.EncDec;
+import common.MysqlManager;
 import common.TestConnection;
 import common.Tracer;
 
@@ -183,27 +186,20 @@ public class Main {
 		}
 	}
 
-	public static DBEnrollment getMM() {
-		if (mm == null) {
-			mm = new DBEnrollment();
-			try {
-				if (TestConnection.isUp()) {
-					if (mm.readDataBase(mysqluser, mysqlpassword, mysqldbname,
-							mysqlip) == false) {
-						mm = null;
-					}
-				} else {
-					mm = null;
-				}
-			} catch (Exception e) {
-				LOGGER.log(
-						Level.WARNING,
-						"There was a problem connecting to database. "
-								+ e.toString(), e);
-				mm = null;
+	public static DBEnrollment getMM(){
+		Connection mm = null;
+		try {
+			if (TestConnection.isUp()) {
+				mm=MysqlManager.readDataBase(mysqluser, mysqlpassword, mysqldbname, mysqlip);
 			}
+		} catch (Exception e) {
+			LOGGER.log(Level.WARNING, "There was a problem connecting to database. " + e.toString(), e);	
 		}
-		return mm;
+		DBEnrollment dbRellotge = null;	
+		if(mm!=null) {
+			dbRellotge = new DBEnrollment(mm);	
+		}
+		return dbRellotge;
 	}
 
 	private static void setUpProperties() {

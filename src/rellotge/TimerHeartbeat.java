@@ -14,15 +14,19 @@ public class TimerHeartbeat extends TimerTask{
 	@Override
 	public void run() {
 		Watchdog.imAlive("heartbeat");
+
 		DBRellotge mm = Rellotge.getMM();
 		if(mm!=null){
 			try{
 				mm.sendHeartBeat();
+				
 			}catch(Exception e){
 				LOGGER.log(Level.SEVERE, "Error while trying to send the heartbeat! "+e.toString(), e);
 				
 			}
+			
 		}
+		
 		
 	}
 

@@ -1,5 +1,7 @@
 package barcodescanner;
 
+import java.sql.Connection;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,6 +14,10 @@ import common.Tracer;
 
 public class DBBarcodescanner extends MysqlManager{
 	
+	public DBBarcodescanner(Connection mm) {
+		super(mm);
+	}
+
 	private static final Logger LOGGER = Tracer.getLogger(DBBarcodescanner.class);
 
 	public void updateStatus(String[] res) {
@@ -39,7 +45,7 @@ public class DBBarcodescanner extends MysqlManager{
 				System.out.println("UPD: "+sql);
 				try {
 					if(TestConnection.isUp()){
-						statement = connect.createStatement();
+						Statement statement = connect.createStatement();
 						resI = statement.executeUpdate(sql);
 						System.out.println("UPDATED ELEMENT:\t\t "+res[i] + "\t\t" +resI);
 					}else{
@@ -49,8 +55,7 @@ public class DBBarcodescanner extends MysqlManager{
 				} catch (Exception e) {
 					LOGGER.log(Level.INFO, "Error while pushing barcode to DDBB. Sending result to the buffer: "+e.toString(), e);
 					BarcodeScanner.movementsFunction(BarcodeScanner.PUT, res[i]);
-					System.out.println("Resetting connection to DDBB.");
-					BarcodeScanner.resetConnection();
+					
 				}				
 			}else{
 				System.out.println("IGNORING ELEMENT: \t\t "+res[i]);
@@ -103,7 +108,7 @@ public class DBBarcodescanner extends MysqlManager{
 		
 		try{
 			if(TestConnection.isUp()){
-				statement = connect.createStatement();
+				Statement statement = connect.createStatement();
 				statement.executeUpdate(sql);
 			}
 		}catch(Exception e){
