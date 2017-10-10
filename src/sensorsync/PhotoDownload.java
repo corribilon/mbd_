@@ -30,8 +30,7 @@ public class PhotoDownload {
 
 	private static int port;
 
-	public static void main(String[] args) throws IOException {
-		
+	public static void main(String[] args) throws IOException {		
 		
 		Tracer.setup();
 		

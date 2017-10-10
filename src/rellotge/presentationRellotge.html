@@ -1,0 +1,130 @@
+<html>
+<head>
+<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+
+var lastId = -1;
+var lastTimeoutId = -1;
+var lastResult=null;
+
+function checkJson(){
+	$.getJSON( "portRellotge.json" , function( result ){
+		if(lastId!=result.idOperation){
+			lastId = result.idOperation;
+			lastResult = result;
+			onChangedData(result);
+		}
+    });
+}
+
+function onChangedData(result){
+	programTimeout(5000);
+	$("#greetings").hide();
+	$("#options").hide();
+	$("#container").html("");
+	$("#container").show();	
+	if(result.operation=="entry"){
+		$("#container").append("<h1>"+result.nom+" "+result.cognoms+"</h1>");
+		$("#container").append("<h3>Entrada</h3>");
+		$("#container").append("<div><img src='"+result.foto+"'></div>");
+		$("#container").append("<p><a href=\"javascript:void(0);\" onclick='javascript:onShowOptions();'>Show Options</a></p>");				
+	}
+	if(result.operation=="out"){
+		$("#container").append("<h1>"+result.nom+" "+result.cognoms+"</h1>");
+		$("#container").append("<h3>Sortida</h3>");
+		$("#container").append("<div><img src='"+result.foto+"'></div>");
+		$("#container").append("<p><a href=\"javascript:void(0);\" onclick='javascript:onShowOptions();'>Show Options</a></p>");
+	}
+	if(result.operation=="failed"){
+		lastIdUser = -1;
+		$("#container").append("<h1>Lectura incorrecte!</h1>");		
+	}
+	
+	if(result.operation=="blank"){
+		lastIdUser = -1;
+		$("#container").html("<p>blank page</p>");	
+	}
+}
+
+
+function programTimeout(millis){
+	var f = lastTimeoutId+1;
+	setTimeout(function(){ onTimeout(f); }, millis);
+	lastTimeoutId = f;
+}
+
+
+
+function onTimeout(idTimeout){	
+	if(idTimeout == lastTimeoutId){
+		//Vaciamos todo 
+		$("#container").html("");
+		$("#options").html("");
+		
+		//Escondemos todo menos el container
+		$("#greetings").hide();
+		$("#options").hide();
+		
+		//Ponemos el blank page
+		$("#container").html("<p>blank page</p>");	
+		$("#container").show();	
+	}
+}
+
+function back(){
+	programTimeout(5000);
+	$("#options").hide();
+	$("#greetings").hide();
+	$("#container").show();
+}
+
+
+
+
+
+
+
+function onSendOption(iduser, option){	
+	programTimeout(3000);
+	$.ajax({
+		  url: "http://localhost:9000/rellotge?idUser="+iduser+"&optionSelected="+option,
+		  crossDomain:true
+		});
+	$("#options").hide();
+	$("#greetings").show();	
+	
+}
+
+
+function onShowOptions(){
+	programTimeout(10000);
+	
+	$("#container").hide();
+	$("#greetings").hide();
+	$("#options").show();
+	$("#options").html("");
+	$("#options").append("<p><a href=\"javascript:void(0);\" onclick='javascript:onSendOption("+lastResult.idUser+",\"foo0\");'>SendOption 0</a></p>");
+	$("#options").append("<p><a href=\"javascript:void(0);\" onclick='javascript:onSendOption("+lastResult.idUser+",\"foo1\");'>SendOption 1</a></p>");
+	$("#options").append("<p><a href=\"javascript:void(0);\" onclick='javascript:onSendOption("+lastResult.idUser+",\"foo2\");'>SendOption 2</a></p>");
+	$("#options").append("<p><a href=\"javascript:void(0);\" onclick='javascript:onSendOption("+lastResult.idUser+",\"foo3\");'>SendOption 3</a></p>");
+	$("#options").append("<p><a href=\"javascript:void(0);\" onclick='javascript:onSendOption("+lastResult.idUser+",\"foo4\");'>SendOption 4</a></p>");
+	
+	$("#options").append("<br /><p><a href=\"javascript:void(0);\" onclick='javascript:back("+lastResult.idUser+");'>BACK</a></p>");
+		
+}
+
+setInterval(function(){ checkJson(); }, 500);
+
+
+</script>
+</head>
+<body>
+<div id='container'>
+</div>
+<div id='options' style='display:none;'>
+</div>
+<div id='greetings' style='display:none'>
+	<p>Gracias!</p>
+</div>
+</body>
+</html>

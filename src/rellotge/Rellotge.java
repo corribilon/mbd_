@@ -1,8 +1,11 @@
 package rellotge;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ import java.util.logging.Logger;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
+import org.json.simple.JSONObject;
 
 import common.BufferManager;
 import common.EncDec;
@@ -37,13 +41,15 @@ public class Rellotge implements Validator{
 	static String mysqldbname = "";
 	static String mysqlip=""; 
 	
-	private static int num_linia;
-	
-	
+	private static int num_linia;	
 	
 	public final static int NUM_LINIA = 1;
 	
 	private HashMap<String, Long> last5mins;
+	
+	public static Rellotge instance;
+	
+	public static int idOperationCounter = 0;
 
 	public static void main(String[] args) throws Exception {
 		
@@ -65,6 +71,8 @@ public class Rellotge implements Validator{
         }
         
         Rellotge r = new Rellotge();
+        instance = r;
+        r.sendToPort("blank");
 		GlobalScreen.addNativeKeyListener(new KeyLog(r));		
 		prop = getProperties();		
 		setUpProperties();
@@ -109,6 +117,7 @@ public class Rellotge implements Validator{
 		Watchdog.imAlive("main");
 		Watchdog.imAlive("consumer");
 		Watchdog.imAlive("heartbeat");
+		Watchdog.imAlive("fingerprint");
 		
 		TimerTask task = new TimerHeartbeat();
     	Timer timer = new Timer();
@@ -117,6 +126,25 @@ public class Rellotge implements Validator{
     	TimerTask consumerTask = new ThreadConsumer();
     	Timer timerCons = new Timer();
     	timerCons.schedule(consumerTask, 1000,10000);
+    	
+    	final Thread fingerprint = new Thread(new SearchSensor());
+    	fingerprint.start();
+    	
+    	TimerTask thFg = new TimerTask() {			
+			@Override
+			public void run() {
+				Watchdog.imAlive("fingerprint");
+				boolean isAlive = fingerprint.isAlive();
+				if(!isAlive) {
+					LOGGER.log(Level.WARNING, "The SensorSynch Thread has ended... Restarting");
+					fingerprint.start();
+				}				
+			}
+		};
+		Timer tFg = new Timer();
+		tFg.schedule(thFg, 1000, 5000);
+		
+		
 		
 		System.out.println("LISTENING...");
 		while(true){
@@ -194,6 +222,11 @@ public class Rellotge implements Validator{
 			LOGGER.log(Level.INFO, "The input "+o.toString() +" is not a representable number!");
 			return false;
 		}
+		
+		//If its a String and its parseable to a long then it can be send to the port to 
+		//be shown on the presentation layer
+		sendToPort((String)o);
+		
 		//It must be not entered in the last 5 minutes		
 		try {
 			boolean entryOk = isEntryOk((String)o, System.currentTimeMillis());
@@ -205,6 +238,51 @@ public class Rellotge implements Validator{
 			LOGGER.log(Level.SEVERE, "Error trying to check when was the last time the "+(String)o +" entry.", e);
 			return false;
 		}
+	}
+
+
+	@SuppressWarnings("unchecked")
+	private synchronized void sendToPort(String o) {
+		JSONObject obj = new JSONObject();
+		if(o.equals("blank")) {
+			idOperationCounter = (idOperationCounter+1)%1986;
+			String idOp = idOperationCounter+"";
+			String op = "blank";			
+			obj.put("idOperation",idOp);
+			obj.put("operation",op);			
+		}else {
+			ArrayList<String> l = SearchSensor.getData(o);
+			String labelId = o;
+			String nom = l.get(4);
+			String cognoms = l.get(5);
+			String foto = l.get(6);
+			String op ="";
+			if(Integer.parseInt(Rellotge.prop.getProperty("entrada"))==0) {
+				op = "entry";
+			}else {
+				op = "out";
+			}
+			idOperationCounter = (idOperationCounter+1)%1986;
+			String idOp = idOperationCounter+"";			
+			
+			obj.put("idOperation",idOp);
+			obj.put("operation",op);
+			obj.put("nom",nom);
+			obj.put("cognoms",cognoms);
+			obj.put("foto", "photos/www/bdncapac/upload/"+foto);
+			obj.put("idUser", labelId);	        
+	        
+		}
+		File f = new File("portRellotge.json");
+        PrintWriter p=null;
+		try {
+			p = new PrintWriter(f);
+		} catch (FileNotFoundException e) {
+			LOGGER.log(Level.SEVERE, "Could not write on the port file: "+e.toString(), e);
+
+		}
+        p.write(obj.toJSONString());
+        p.close();
 	}
 	
 }

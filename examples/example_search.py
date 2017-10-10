@@ -67,7 +67,8 @@ try:
 
     ## Hashes characteristics of template
     ## print('SHA-2 hash of template: ' + hashlib.sha256(characterics).hexdigest())
-    print('characterics: ' + characterics)
+    print('Characterics: ' + characterics)
+    print('Hash: ' + hashlib.sha256(characterics).hexdigest())
 except Exception as e:
     print('Operation failed!')
     print('Exception message: ' + str(e))

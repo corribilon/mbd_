@@ -5,9 +5,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
-
+import java.util.ArrayList;
 import java.util.Calendar;
-
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,55 +19,108 @@ import common.MysqlManager;
 import common.TestConnection;
 import common.Tracer;
 
-public class DBRellotge extends MysqlManager{
+public class DBRellotge extends MysqlManager {
 
 	private static final Logger LOGGER = Tracer.getLogger(DBRellotge.class);
-	
+
 	public DBRellotge(Connection connect) {
 		super(connect);
 	}
 
 	public void updateStatus(String[] res) throws ParseException {
-		int resI = 0;
-		String time = "";
-		String labelId = "";
-		String[] arr = null;
 		for (int i = 0; i < res.length; i++) {
-			arr = getArray(res, i);
-			if (arr != null) {
-				labelId = arr[0];
-				time = arr[1];				
-				String sql = "INSERT INTO rellotge (userid,id,time,entradasortida)" + "VALUES (-1," + labelId
-						+ ", '" + time + "', " + Rellotge.prop.getProperty("entrada") + ")";
-				try {
-					if (TestConnection.isUp()) {
-						Statement statement = connect.createStatement();
-						resI = statement.executeUpdate(sql);
-						System.out.println("UPDATED ELEMENT:\t\t " + res[i] + "\t\t" + resI);
-						if(resI==0){
-							BufferManager.movementsFunction(BufferManager.PUT, res[i]);
-						}
-					} else {
-						System.out.println("No Connection to DDBB. Sending result to the buffer.");
-						BufferManager.movementsFunction(BufferManager.PUT, res[i]);
-					}
-				} catch (CommunicationsException e) {
-					LOGGER.log(Level.INFO, "Communications Exception. Sending result to the buffer: "+e.toString(), e);
-					BufferManager.movementsFunction(BufferManager.PUT, res[i]);
-				} catch (SQLException e) {
-					LOGGER.log(Level.INFO,"LabelId not registered. Ignoring read. "+e.toString(), e);						
-				} catch (SocketException e) {
-					LOGGER.log(Level.WARNING,"Error with the socket. "+ e.toString(), e);						
-					BufferManager.movementsFunction(BufferManager.PUT, res[i]);
-				}
+			if (res[i].contains("opt:")) {
+				insertAbsentisme(res, i);
 			} else {
-				System.out.println("IGNORING ELEMENT: \t\t " + res[i]);
+				insertRellotge(res, i);
 			}
 		}
 	}
 
+	private void insertAbsentisme(String res[], int i) {
 
-	
+		// Get the data
+
+		String[] lineRead = res[i].split("/");
+		String date = lineRead[1];
+		String[] data = lineRead[0].split(";");
+		String concept = data[0].replace("opt:", "");
+		String labelId = data[0].replace("iduser:", "");
+		HashMap<String, ArrayList<String>> mapa = SearchSensor.getMapa();
+		if (mapa != null) {
+			String idUser = mapa.get(labelId).get(0);
+			// Construct the sql
+			String sql = "INSERT INTO absentismo (`Matrícula`,`Data del concepte`, `Concepte`)VALUES(" + idUser + ",'"
+					+ date + "','" + concept + "')";
+			try {
+				if (TestConnection.isUp()) {
+					Statement statement = connect.createStatement();
+					int resI = statement.executeUpdate(sql);
+					System.out.println("UPDATED ELEMENT:\t\t " + res[i] + "\t\t" + resI);
+					if (resI == 0) {
+						BufferManager.movementsFunction(BufferManager.PUT, res[i]);
+					}
+				} else {
+					System.out.println("No Connection to DDBB. Sending result to the buffer.");
+					BufferManager.movementsFunction(BufferManager.PUT, res[i]);
+				}
+			} catch (CommunicationsException e) {
+				LOGGER.log(Level.INFO, "Communications Exception. Sending result to the buffer: " + e.toString(), e);
+				BufferManager.movementsFunction(BufferManager.PUT, res[i]);
+			} catch (SQLException e) {
+				LOGGER.log(Level.INFO, "Exception on the Database Side. Sending result back to the buffer: " + e.toString(), e);
+				BufferManager.movementsFunction(BufferManager.PUT, res[i]);
+			} catch (SocketException e) {
+				LOGGER.log(Level.WARNING, "Error with the socket. Sending result back to the buffer: " + e.toString(), e);
+				BufferManager.movementsFunction(BufferManager.PUT, res[i]);
+			}
+		} else {
+			LOGGER.log(Level.WARNING,
+					"Map is null son cant send the data [" + res[i] + "] to the server... Taking back to the buffer");
+			BufferManager.movementsFunction(BufferManager.PUT, res[i]);
+		}
+
+		
+	}
+
+	private void insertRellotge(String[] res, int i) {
+		int resI = -1;
+		String time = null;
+		String labelId = null;
+		String[] arr = null;
+		arr = getArray(res, i);
+		if (arr != null) {
+			labelId = arr[0];
+			time = arr[1];
+			String sql = "INSERT INTO rellotge (userid,id,time,entradasortida)" + "VALUES (-1," + labelId + ", '" + time
+					+ "', " + Rellotge.prop.getProperty("entrada") + ")";
+			try {
+				if (TestConnection.isUp()) {
+					Statement statement = connect.createStatement();
+					resI = statement.executeUpdate(sql);
+					System.out.println("UPDATED ELEMENT:\t\t " + res[i] + "\t\t" + resI);
+					if (resI == 0) {
+						BufferManager.movementsFunction(BufferManager.PUT, res[i]);
+					}
+				} else {
+					System.out.println("No Connection to DDBB. Sending result to the buffer.");
+					BufferManager.movementsFunction(BufferManager.PUT, res[i]);
+				}
+			} catch (CommunicationsException e) {
+				LOGGER.log(Level.INFO, "Communications Exception. Sending result to the buffer: " + e.toString(), e);
+				BufferManager.movementsFunction(BufferManager.PUT, res[i]);
+			} catch (SQLException e) {
+				LOGGER.log(Level.INFO, "Exception on the Database Side. Sending back to the buffer the result: " + e.toString(), e);
+				BufferManager.movementsFunction(BufferManager.PUT, res[i]);
+			} catch (SocketException e) {
+				LOGGER.log(Level.WARNING, "Error with the socket. " + e.toString(), e);
+				BufferManager.movementsFunction(BufferManager.PUT, res[i]);
+			}
+		} else {
+			System.out.println("IGNORING ELEMENT: \t\t " + res[i]);
+		}
+	}
+
 	private String[] getArray(String[] res, int i) {
 		String[] lineRead = res[i].split("/");
 		long h = -1;
@@ -89,18 +142,18 @@ public class DBRellotge extends MysqlManager{
 		String sql = "INSERT INTO 02_tbl_heartbeat (`idheartbeat`, `idlinia`) VALUES(" + idheartbeat + ", "
 				+ numLiniaStr + ") ON DUPLICATE KEY UPDATE idlinia=" + numLiniaStr + ", `time`=CURRENT_TIMESTAMP;";
 		try {
-			if (TestConnection.isUp()) {			
+			if (TestConnection.isUp()) {
 				Statement statement = connect.createStatement();
 				statement.executeUpdate(sql);
 			}
 		} catch (CommunicationsException e) {
-			LOGGER.log(Level.INFO, "Communications Exception. "+e.toString(), e);
+			LOGGER.log(Level.INFO, "Communications Exception. " + e.toString(), e);
 		} catch (SQLException e) {
-			LOGGER.log(Level.INFO,e.toString(), e);						
+			LOGGER.log(Level.INFO, e.toString(), e);
 		} catch (SocketException e) {
-			LOGGER.log(Level.WARNING,"Error with the socket. "+ e.toString(), e);
+			LOGGER.log(Level.WARNING, "Error with the socket. " + e.toString(), e);
 		} catch (Exception e) {
-			LOGGER.log(Level.WARNING, "Error sending heartbeat "+e.toString(), e);			
+			LOGGER.log(Level.WARNING, "Error sending heartbeat " + e.toString(), e);
 		}
 	}
 
@@ -116,8 +169,5 @@ public class DBRellotge extends MysqlManager{
 		String idheartbeat = currentMinutesStr + dayOfWeekStr + numLinia;
 		return idheartbeat;
 	}
-	
-	
-
 
 }

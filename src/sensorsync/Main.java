@@ -38,12 +38,13 @@ public class Main {
 	public void run() {
 		DBSyncSensor mm = getMM();
 		HashMap<String,ArrayList<String>> res = mm.getDatabaseRes();
-		try {
-			bulkResIntoFile(res);
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, e.toString(), e);
+		if(res!=null) {
+			try {
+				bulkResIntoFile(res);
+			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE, e.toString(), e);
+			}
 		}
-		
 	}
 
 
