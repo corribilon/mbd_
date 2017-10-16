@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,7 +23,7 @@ import common.Tracer;
 public class SearchSensor implements Runnable {
 
 	private static final String LOCAL_DB_LDB = "../SensorSync/localDB.ldb";
-//	private static final String LOCAL_DB_LDB = "localDB.ldb";
+	// private static final String LOCAL_DB_LDB = "localDB.ldb";
 	private static final Logger LOGGER = Tracer.getLogger(SearchSensor.class);
 	private static HashMap<String, ArrayList<String>> mapa = null;
 	private static long lastUpd = -1;
@@ -31,51 +32,65 @@ public class SearchSensor implements Runnable {
 
 		while (true) {
 
-			String hash = null;
 			try {
-				hash = readFinger();
-			} catch (IOException e) {
-				LOGGER.log(Level.SEVERE, e.toString(), e);
-			} catch (InterruptedException e) {
-				LOGGER.log(Level.SEVERE, e.toString(), e);
-			}
+				if (getHour() != 00) {
+					String hash = null;
+					try {
+						hash = readFinger();
+					} catch (IOException e) {
+						LOGGER.log(Level.SEVERE, e.toString(), e);
+					} catch (InterruptedException e) {
+						LOGGER.log(Level.SEVERE, e.toString(), e);
+					}
 
-			if (hash != null) {
-				ArrayList<String> content = null;
-				try {
-					content = readMapaAndFilterByHash(hash);
-					System.out.println("CONTENT: "+content);
-				} catch (FileNotFoundException e) {
-					LOGGER.log(Level.SEVERE, e.toString(), e);
-				}
-				if (content != null) {
-					String buffer2 = content.get(1);
-					boolean isValid = Rellotge.instance.isValid(buffer2);
-					if (isValid) {
-						String d = KeyLog.sdf.format(new Date());
-						buffer2 = (buffer2 + "/" + d);
-						BufferManager.movementsFunction(BufferManager.PUT, buffer2);
-						LOGGER.log(Level.INFO, "READ FROM FINGERPRINT: " + buffer2);
+					if (hash != null) {
+						ArrayList<String> content = null;
+						try {
+							content = readMapaAndFilterByHash(hash);
+							System.out.println("CONTENT: " + content);
+						} catch (FileNotFoundException e) {
+							LOGGER.log(Level.SEVERE, e.toString(), e);
+						}
+						if (content != null) {
+							String buffer2 = content.get(1);
+							boolean isValid = Rellotge.instance.isValid(buffer2);
+							if (isValid) {
+								String d = KeyLog.sdf.format(new Date());
+								buffer2 = (buffer2 + "/" + d);
+								BufferManager.movementsFunction(BufferManager.PUT, buffer2);
+								LOGGER.log(Level.INFO, "READ FROM FINGERPRINT: " + buffer2);
+							} else {
+								LOGGER.log(Level.SEVERE,
+										"NOT VALID READ FROM FINGERPRINT: " + buffer2 + " - Ignored...");
+							}
+						} else {
+							LOGGER.log(Level.WARNING, "CONTENT = NULL");
+						}
 					} else {
-						LOGGER.log(Level.SEVERE, "NOT VALID READ FROM FINGERPRINT: " + buffer2 + " - Ignored...");
+						LOGGER.log(Level.WARNING, "NOT HASH FOUND ON LOCAL DB!");
+						Rellotge.instance.sendToPort("failed");
 					}
 				} else {
-					LOGGER.log(Level.WARNING, "CONTENT = NULL");
+					try {
+						Thread.currentThread().wait(10000);
+					} catch (InterruptedException e) {
+						LOGGER.log(Level.WARNING, "Could not wait on the sync time. " + e.toString(), e);
+					}
 				}
-			} else {
-				LOGGER.log(Level.WARNING, "NOT HASH FOUND ON LOCAL DB!");
-				Rellotge.instance.sendToPort("failed");
+			} catch (Exception e) {
+				LOGGER.log(Level.SEVERE, "An unhandled exception occured on the Sensor Read thread. " + e.toString(),
+						e);
 			}
 		}
+
 	}
 
-	
-	public static ArrayList<String> getData(String labelId){
+	public static ArrayList<String> getData(String labelId) {
 		return getMapa().get(labelId);
 	}
-	
-	public static synchronized HashMap<String, ArrayList<String>> getMapa(){
-		if(lastUpd==-1 || lastUpd<System.currentTimeMillis()-(20*60*1000)) {
+
+	public static synchronized HashMap<String, ArrayList<String>> getMapa() {
+		if (lastUpd == -1 || lastUpd < System.currentTimeMillis() - (20 * 60 * 1000)) {
 			try {
 				readMapaAndFilterByHash("-1");
 			} catch (FileNotFoundException e) {
@@ -84,25 +99,25 @@ public class SearchSensor implements Runnable {
 		}
 		return mapa;
 	}
-	
+
 	private static synchronized ArrayList<String> readMapaAndFilterByHash(String hash) throws FileNotFoundException {
 		HashMap<String, ArrayList<String>> copy = null;
-		if(mapa!=null) {
+		if (mapa != null) {
 			copy = new HashMap<String, ArrayList<String>>(mapa);
-		}		
+		}
 		ArrayList<String> toRet = null;
 		try {
 			mapa = new HashMap<String, ArrayList<String>>();
 			File f = new File(LOCAL_DB_LDB);
 			Scanner s = new Scanner(f);
 			String file = "";
-			
+
 			while (s.hasNextLine()) {
-				file = file+ s.nextLine();
+				file = file + s.nextLine();
 			}
-			
+
 			JSONArray a = new JSONArray(file);
-			
+
 			for (Object object : a) {
 				JSONObject o = (JSONObject) object;
 				String labelid = o.getString("labelid");
@@ -115,24 +130,25 @@ public class SearchSensor implements Runnable {
 				strArr.add(o.getString("cognoms"));
 				strArr.add(o.getString("foto"));
 				mapa.put(labelid, strArr);
-				
-				if(hash.trim().equals(o.getString("hash").trim())) {
+
+				if (hash.trim().equals(o.getString("hash").trim())) {
 					toRet = strArr;
 				}
-				
+
 			}
-			
+
 			s.close();
 			lastUpd = System.currentTimeMillis();
 		} catch (Exception e) {
-			LOGGER.log(Level.SEVERE, "Rollback to the state before. Error wile loading the local DB."+e.toString(), e);
-			//Restore the state before (Tha last that was working)
+			LOGGER.log(Level.SEVERE, "Rollback to the state before. Error wile loading the local DB." + e.toString(),
+					e);
+			// Restore the state before (Tha last that was working)
 			mapa = copy;
-			if(mapa!=null) {
+			if (mapa != null) {
 				ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>(mapa.values());
-				//Iterate over all the values to find the hash
+				// Iterate over all the values to find the hash
 				for (ArrayList<String> arrayList : list) {
-					if(arrayList.get(3).equals(hash)) {
+					if (arrayList.get(3).equals(hash)) {
 						toRet = arrayList;
 					}
 				}
@@ -141,12 +157,6 @@ public class SearchSensor implements Runnable {
 		return toRet;
 	}
 
-
-
-
-
-	
-	
 	private String readFinger() throws IOException, InterruptedException {
 		String hash = null;
 
@@ -154,7 +164,7 @@ public class SearchSensor implements Runnable {
 		BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
 		BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-		p.waitFor(); //Blocking!
+		p.waitFor(); // Blocking!
 
 		String s = "";
 
@@ -180,8 +190,14 @@ public class SearchSensor implements Runnable {
 		return hash;
 	}
 
+	public static void main(String[] argsv) {
 
+	}
 
+	public static int getHour() {
+		SimpleDateFormat sdf = new SimpleDateFormat("HH");
+		String s = sdf.format(new Date());
+		return Integer.parseInt(s);
+	}
 
-	
 }
