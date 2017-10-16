@@ -1,122 +1,471 @@
 <html>
 <head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
 
 var lastId = -1;
 var lastTimeoutId = -1;
 var lastResult=null;
+var blankPageHTML ="<div id='blankPage'><div id='clock'></div></div>";
+var entryHTML = "<div id='entry'>"+
+					"<div class='leftPart'>"+
+						"<div class='upperTab'>"+
+							"Entrada __TIME__"+
+						"</div>"+
+						"<table id='dataTable'>"+
+							"<tr>"+
+								"<td class='imageTd'>"+
+									"<div>"+
+										"<img src='__FOTO__' onerror=\"this.src='imgs/default.jpg'\">"+
+									"</div>"+
+								"</td>"+
+								"<td class='nameTd'>"+
+									"<h1>__NOM__</h1>"+
+									"<h1>__COGNOMS__</h1>"+
+								"</td>"+
+							"</tr>"+
+						"</table>"+
+					"</div>"+
+					"<div class='rightPart'>"+
+						"<a class='optionCl' href=\"javascript:void(0);\" onclick='javascript:onShowOptions();'>Opcions Absentisme</a>"+
+					"</div>"+
+				"</div>";
 
-function checkJson(){
-	$.getJSON( "portRellotge.json" , function( result ){
-		if(lastId!=result.idOperation){
-			lastId = result.idOperation;
-			lastResult = result;
-			onChangedData(result);
-		}
-    });
-}
+				
+var outHTML = "<div id='out'>"+
+					"<div class='leftPart'>"+
+						"<div class='upperTab'>"+
+							"Sortida __TIME__"+
+						"</div>"+
+						"<table id='dataTable'>"+
+							"<tr>"+
+								"<td class='imageTd'>"+
+									"<div>"+
+										"<img src='__FOTO__' onerror=\"this.src='imgs/default.jpg'\">"+
+									"</div>"+
+								"</td>"+
+								"<td class='nameTd'>"+
+									"<h1>__NOM__</h1>"+
+									"<h1>__COGNOMS__</h1>"+
+								"</td>"+
+							"</tr>"+
+						"</table>"+
+					"</div>"+
+					"<div class='rightPart'>"+
+						"<a class='optionCl' href=\"javascript:void(0);\" onclick='javascript:onShowOptions();'>Opcions Absentisme</a>"+
+					"</div>"+
+				"</div>";
+				
+var optionsHTML = 	"<div id='optionsCt'>"+
+ 						"<div id='titleOpts'>"+
+							"Escolleix una opció"+
+						"</div>"+  
+						"<table id='optionsTbl'>"+
+							"<tr>"+
+								"<td>__0__</td>"+
+								"<td>__5__</td>"+
+							"</tr>"+
+							"<tr>"+
+								"<td>__1__</td>"+
+								"<td>__6__</td>"+
+							"</tr>"+
+							"<tr>"+
+								"<td>__2__</td>"+
+								"<td>__7__</td>"+
+							"</tr>"+
+							"<tr>"+
+								"<td>__3__</td>"+
+								"<td>__8__</td>"+
+							"</tr>"+
+							"<tr>"+
+								"<td>__4__</td>"+
+								"<td>__9__</td>"+
+							"</tr>"+
+						"</table>"+
+					"</div>";
+					
+				
+var isBlank = 0;
+var absentismeArray;
 
-function onChangedData(result){
-	programTimeout(5000);
-	$("#greetings").hide();
-	$("#options").hide();
-	$("#container").html("");
-	$("#container").show();	
-	if(result.operation=="entry"){
-		$("#container").append("<h1>"+result.nom+" "+result.cognoms+"</h1>");
-		$("#container").append("<h3>Entrada</h3>");
-		$("#container").append("<div><img src='"+result.foto+"'></div>");
-		$("#container").append("<p><a href=\"javascript:void(0);\" onclick='javascript:onShowOptions();'>Show Options</a></p>");				
-	}
-	if(result.operation=="out"){
-		$("#container").append("<h1>"+result.nom+" "+result.cognoms+"</h1>");
-		$("#container").append("<h3>Sortida</h3>");
-		$("#container").append("<div><img src='"+result.foto+"'></div>");
-		$("#container").append("<p><a href=\"javascript:void(0);\" onclick='javascript:onShowOptions();'>Show Options</a></p>");
-	}
-	if(result.operation=="failed"){
-		lastIdUser = -1;
-		$("#container").append("<h1>Lectura incorrecte!</h1>");		
-	}
-	
-	if(result.operation=="blank"){
-		lastIdUser = -1;
-		$("#container").html("<p>blank page</p>");	
-	}
-}
 
 
-function programTimeout(millis){
-	var f = lastTimeoutId+1;
-	setTimeout(function(){ onTimeout(f); }, millis);
-	lastTimeoutId = f;
-}
-
-
-
-function onTimeout(idTimeout){	
-	if(idTimeout == lastTimeoutId){
-		//Vaciamos todo 
-		$("#container").html("");
-		$("#options").html("");
+	$.getJSON("absentisme.json?rnd=" + Math.random(), function(data) {
+		absentismeArray = data;
 		
-		//Escondemos todo menos el container
+	});
+
+	function checkJson() {
+		$.getJSON("portRellotge.json?rnd=" + Math.random(), function(result) {
+			if (lastId != result.idOperation) {
+				lastId = result.idOperation;
+				lastResult = result;
+				onChangedData(result);
+			}
+		});
+
+		startTime();
+		
+		document.body.style.cursor = "none";
+	}
+
+	function onChangedData(result) {
+		programTimeout(5000);
 		$("#greetings").hide();
 		$("#options").hide();
-		
-		//Ponemos el blank page
-		$("#container").html("<p>blank page</p>");	
-		$("#container").show();	
+		$("#container").html("");
+		$("#container").show();
+
+		var today = new Date();
+		var h = today.getHours();
+		var m = today.getMinutes();
+		var s = today.getSeconds();
+		m = checkTime(m);
+		s = checkTime(s);
+		var hms = h + ":" + m + ":" + s;
+		isBlank = 0;
+
+		if (result.operation == "entry") {
+
+			var en = entryHTML + "";
+
+			en = en.replace("__COGNOMS__", result.cognoms + "");
+			en = en.replace("__NOM__", "" + result.nom);
+			en = en.replace("__TIME__", hms + "");
+			en = en.replace("__FOTO__", result.foto + "");
+
+			$("#container").append(en);
+
+		}
+		if (result.operation == "out") {
+
+			var ou = outHTML + "";
+
+			ou = ou.replace("__COGNOMS__", result.cognoms + "");
+			ou = ou.replace("__NOM__", "" + result.nom);
+			ou = ou.replace("__TIME__", hms + "");
+			ou = ou.replace("__FOTO__", result.foto + "");
+
+			$("#container").append(ou);
+		}
+		if (result.operation == "failed") {
+			lastIdUser = -1;
+			$("#container").append(
+					"<div id='failed'>"+
+						"<div id='failedTxt'>"+
+							"Lectura incorrecte!"+
+						"</div>"+
+					"</div>");
+		}
+
+		if (result.operation == "blank") {
+			lastIdUser = -1;
+			isBlank = 1;
+			$("#container").html(blankPageHTML);
+		}
+
 	}
-}
 
-function back(){
-	programTimeout(5000);
-	$("#options").hide();
-	$("#greetings").hide();
-	$("#container").show();
-}
+	function startTime() {
+		if (isBlank == 1) {
+			var today = new Date();
+			var h = today.getHours();
+			var m = today.getMinutes();
+			var s = today.getSeconds();
+			m = checkTime(m);
+			s = checkTime(s);
+			document.getElementById('clock').innerHTML = h + ":" + m + ":" + s;
+		}
 
+	}
+	function checkTime(i) {
+		if (i < 10) {
+			i = "0" + i
+		}
+		; // add zero in front of numbers < 10
+		return i;
+	}
 
+	function programTimeout(millis) {
+		var f = lastTimeoutId + 1;
+		setTimeout(function() {
+			onTimeout(f);
+		}, millis);
+		lastTimeoutId = f;
+	}
 
+	function onTimeout(idTimeout) {
+		if (idTimeout == lastTimeoutId) {
+			//Vaciamos todo 
+			$("#container").html("");
+			$("#options").html("");
 
+			//Escondemos todo menos el container
+			$("#greetings").hide();
+			$("#options").hide();
 
+			//Ponemos el blank page
+			$("#container").html(blankPageHTML);
+			$("#container").show();
+			isBlank = 1;
+		}
+	}
 
+	function back() {
+		programTimeout(5000);
+		$("#options").hide();
+		$("#greetings").hide();
+		$("#container").show();
+	}
 
-function onSendOption(iduser, option){	
-	programTimeout(3000);
-	$.ajax({
-		  url: "http://localhost:9000/rellotge?idUser="+iduser+"&optionSelected="+option,
-		  crossDomain:true
+	function onSendOption(iduser, option) {
+		programTimeout(3000);
+		$.ajax({
+			url : "http://localhost:9000/rellotge?idUser=" + iduser
+					+ "&optionSelected=" + option,
+			crossDomain : true
 		});
-	$("#options").hide();
-	$("#greetings").show();	
-	
-}
+		$("#options").hide();
+		$("#greetings").show();
 
+	}
 
-function onShowOptions(){
-	programTimeout(10000);
-	
-	$("#container").hide();
-	$("#greetings").hide();
-	$("#options").show();
-	$("#options").html("");
-	$("#options").append("<p><a href=\"javascript:void(0);\" onclick='javascript:onSendOption("+lastResult.idUser+",\"foo0\");'>SendOption 0</a></p>");
-	$("#options").append("<p><a href=\"javascript:void(0);\" onclick='javascript:onSendOption("+lastResult.idUser+",\"foo1\");'>SendOption 1</a></p>");
-	$("#options").append("<p><a href=\"javascript:void(0);\" onclick='javascript:onSendOption("+lastResult.idUser+",\"foo2\");'>SendOption 2</a></p>");
-	$("#options").append("<p><a href=\"javascript:void(0);\" onclick='javascript:onSendOption("+lastResult.idUser+",\"foo3\");'>SendOption 3</a></p>");
-	$("#options").append("<p><a href=\"javascript:void(0);\" onclick='javascript:onSendOption("+lastResult.idUser+",\"foo4\");'>SendOption 4</a></p>");
-	
-	$("#options").append("<br /><p><a href=\"javascript:void(0);\" onclick='javascript:back("+lastResult.idUser+");'>BACK</a></p>");
+	function onShowOptions() {
+		programTimeout(10000);
+
+		$("#container").hide();
+		$("#greetings").hide();
+		$("#options").show();
+		$("#options").html("");
 		
+		var ops = optionsHTML;
+		
+		
+		var arrayLength = absentismeArray.length;
+		for (var i = 0; i < 10; i++) {
+			if(i<arrayLength){				
+			    var str = absentismeArray[i];
+			    ops = ops.replace("__"+i+"__",
+						"<a class='optionCl' href=\"javascript:void(0);\" onclick='javascript:onSendOption("
+								+ lastResult.idUser
+								+ ",\""+str+"\");'>"+str+"</a>"); 
+								
+			}else{
+				ops = ops.replace("__"+i+"__","");
+			}
+		}
+		
+		$("#options").append(ops);
+
+		$("#optionsCt").append(
+				"<div class='rightPart'><a class='optionCl' href=\"javascript:void(0);\" onclick='javascript:back("
+						+ lastResult.idUser + ");'>Cancel.la</a></div>");
+
+	}
+
+	setInterval(function() {
+		checkJson();
+	}, 100);
+</script>
+<style type="text/css">
+body {
+	font-family: sans-serif;
+	color: gray;
+	background-color: #dedfe0;	
+	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+     cursor: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAZdEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjbQg61aAAAADUlEQVQYV2P4//8/IwAI/QL/+TZZdwAAAABJRU5ErkJggg=='),
+    url(images/blank.cur),
+    none !important;
 }
 
-setInterval(function(){ checkJson(); }, 500);
+#blankPage {
+	position:fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -210px; 
+    margin-left: -320px; 
+    
+	background-image: url("imgs/logohalf.jpg");
+	background-repeat: no-repeat;
+	background-color: white;
+	background-position: center center; 
+	border-radius:25px;
+	width: 640px;
+	height: 410px;
+	padding: 20px;
+}
+
+#clock {
+	font-size: 50px;
+	padding-top: 20px;
+	padding-top: 50px;
+	padding-left: 25px;
+	
+}
+
+img {
+	width: 220px;
+	border-radius: 25px;
+}
+
+#entry, #out{
+	position:fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -155px; 
+    margin-left: -370px;
+	width: 740px;
+	height: 310px;
+	border-radius: 25px;
+	background-color: white;
+	padding: 25px;
+}
 
 
-</script>
+.optionCl {
+	font-size: 30px;
+	background-color: gray;
+	color:white;
+	border-radius: 15px;
+	padding:10px;	
+	text-decoration: none;
+}
+
+.optionCl:hover {
+	background-color: white;
+	border: 1px solid grey;
+	color:grey;
+}
+
+.rightPart{
+
+	padding: 25px;
+	background-color: white;
+	border-radius:25px;
+	position: absolute;
+    bottom: -50px;
+    right: 20px;
+}
+
+
+
+h1{
+	font-size: 50px;
+	font-weight: normal;
+	margin: 0px;
+	margin-top: -10px; 
+}
+
+
+.upperTab{
+	background-color: white;
+	display: block;
+	margin-top: -80px;
+	padding:25px;
+	font-size:35px; 
+	border-radius: 25px;
+	width: 320px;
+}
+
+
+#dataTable{
+	width: 90%;
+  	margin: 0 auto;
+	border: none;
+	margin-top: 25px;
+}
+
+#dataTable td{
+	vertical-align: top;
+}
+
+.imageTd{
+	text-align: left;
+}
+
+.nameTd {
+	text-align: right;
+}
+
+#greetings {
+	position:fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px; 
+    margin-left: -250px;
+	width: 500px;
+	height: 200px;
+	border-radius: 25px;
+	background-color: white;
+	
+}
+
+#txtGreetings{
+	padding-left: 30%;
+	padding-top: 15%;
+}
+
+#failed {
+	position:fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -100px; 
+    margin-left: -300px;
+	width: 600px;
+	height: 200px;
+	border-radius: 25px;
+	background-color: white;
+	
+}
+
+#failedTxt{
+	padding-left: 10%;
+	font-size: 50px;
+	padding-top: 11%;
+}
+
+
+#optionsCt {
+	position:fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -140px; 
+    margin-left: -450px;
+	width: 900px;
+	height: 380px;
+	border-radius: 25px;
+	background-color: white;
+}
+
+#optionsTbl{
+	width: 95%;
+  	margin: 2% auto;
+	border: none;
+	margin-top: 0px;
+}
+
+#optionsTbl td{
+	padding-top:20px;
+}
+
+#titleOpts{
+	background-color: white;
+	margin-top: -60px;
+	padding:25px;
+	font-size:35px; 
+	border-radius: 25px;
+	width: 350px;
+	margin-left: 20px;
+	
+}
+
+</style>
 </head>
 <body>
 <div id='container'>
@@ -124,7 +473,9 @@ setInterval(function(){ checkJson(); }, 500);
 <div id='options' style='display:none;'>
 </div>
 <div id='greetings' style='display:none'>
-	<p>Gracias!</p>
+<div id='txtGreetings'>
+	<h1>Gràcies!</h1>
+</div>
 </div>
 </body>
 </html>

@@ -184,6 +184,7 @@ public class Main {
 			error = true;
 			System.out.println("Error: " + s);
 		}
+		System.out.println("OUT: "+s);
 	}
 
 	public static DBEnrollment getMM(){

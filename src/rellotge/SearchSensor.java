@@ -12,12 +12,17 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import common.BufferManager;
 import common.KeyLog;
 import common.Tracer;
 
 public class SearchSensor implements Runnable {
 
+	private static final String LOCAL_DB_LDB = "../SensorSync/localDB.ldb";
+//	private static final String LOCAL_DB_LDB = "localDB.ldb";
 	private static final Logger LOGGER = Tracer.getLogger(SearchSensor.class);
 	private static HashMap<String, ArrayList<String>> mapa = null;
 	private static long lastUpd = -1;
@@ -39,6 +44,7 @@ public class SearchSensor implements Runnable {
 				ArrayList<String> content = null;
 				try {
 					content = readMapaAndFilterByHash(hash);
+					System.out.println("CONTENT: "+content);
 				} catch (FileNotFoundException e) {
 					LOGGER.log(Level.SEVERE, e.toString(), e);
 				}
@@ -53,7 +59,12 @@ public class SearchSensor implements Runnable {
 					} else {
 						LOGGER.log(Level.SEVERE, "NOT VALID READ FROM FINGERPRINT: " + buffer2 + " - Ignored...");
 					}
+				} else {
+					LOGGER.log(Level.WARNING, "CONTENT = NULL");
 				}
+			} else {
+				LOGGER.log(Level.WARNING, "NOT HASH FOUND ON LOCAL DB!");
+				Rellotge.instance.sendToPort("failed");
 			}
 		}
 	}
@@ -75,34 +86,42 @@ public class SearchSensor implements Runnable {
 	}
 	
 	private static synchronized ArrayList<String> readMapaAndFilterByHash(String hash) throws FileNotFoundException {
-		HashMap<String, ArrayList<String>> copy = new HashMap<String, ArrayList<String>>(mapa);
+		HashMap<String, ArrayList<String>> copy = null;
+		if(mapa!=null) {
+			copy = new HashMap<String, ArrayList<String>>(mapa);
+		}		
 		ArrayList<String> toRet = null;
 		try {
 			mapa = new HashMap<String, ArrayList<String>>();
-			File f = new File("localDB.ldb");
+			File f = new File(LOCAL_DB_LDB);
 			Scanner s = new Scanner(f);
-			String line = "";
+			String file = "";
 			
 			while (s.hasNextLine()) {
-				line = s.nextLine();
-				String[] arr = line.split(";");
-				String characterics = arr[0];
-				line.replace(characterics, "$$$token_characterics$$$");
-				arr = arr[2].split(",");
-				ArrayList<String> content = new ArrayList<String>();
-				for (int i = 0; i < arr.length; i++) {
-					if (arr[i].equals("$$$token_characterics$$$")) {
-						arr[i] = characterics;
-					}
-					content.add(arr[i]);
-				}
-				String labelid = arr[1];
-				String hashA = arr[3];
-				if (hash.equals(hashA)) {
-					toRet = content;
-				}
-				mapa.put(labelid, content);
+				file = file+ s.nextLine();
 			}
+			
+			JSONArray a = new JSONArray(file);
+			
+			for (Object object : a) {
+				JSONObject o = (JSONObject) object;
+				String labelid = o.getString("labelid");
+				ArrayList<String> strArr = new ArrayList<String>();
+				strArr.add(o.getString("iduser"));
+				strArr.add(o.getString("labelid"));
+				strArr.add(o.getString("characterics"));
+				strArr.add(o.getString("hash"));
+				strArr.add(o.getString("nom"));
+				strArr.add(o.getString("cognoms"));
+				strArr.add(o.getString("foto"));
+				mapa.put(labelid, strArr);
+				
+				if(hash.trim().equals(o.getString("hash").trim())) {
+					toRet = strArr;
+				}
+				
+			}
+			
 			s.close();
 			lastUpd = System.currentTimeMillis();
 		} catch (Exception e) {
@@ -122,6 +141,12 @@ public class SearchSensor implements Runnable {
 		return toRet;
 	}
 
+
+
+
+
+	
+	
 	private String readFinger() throws IOException, InterruptedException {
 		String hash = null;
 
@@ -136,6 +161,7 @@ public class SearchSensor implements Runnable {
 		while ((s = stdInput.readLine()) != null) {
 			if (s.contains("Hash:")) {
 				hash = s.replace("Hash: ", "");
+				hash = hash.trim();
 				System.out.println("Found with hash: " + hash);
 			}
 			if (s.contains("No match found!")) {
@@ -154,4 +180,8 @@ public class SearchSensor implements Runnable {
 		return hash;
 	}
 
+
+
+
+	
 }

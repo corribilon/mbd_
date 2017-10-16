@@ -18,8 +18,10 @@ import common.KeyLog;
 @SuppressWarnings("restriction")
 public class HttpServ {
 
-    public static void main(String[] args) throws Exception {
-        HttpServer server = HttpServer.create(new InetSocketAddress(9000), 0);
+    private static HttpServer server;
+    
+    public static void initServ() throws IOException {
+    	server = HttpServer.create(new InetSocketAddress(9000), 0);
         server.createContext("/rellotge", new MyHandler());
         server.setExecutor(null); // creates a default executor
         server.start();

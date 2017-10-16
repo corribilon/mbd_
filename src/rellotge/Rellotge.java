@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
-import org.json.simple.JSONObject;
+import org.json.JSONObject;
 
 import common.BufferManager;
 import common.EncDec;
@@ -130,6 +130,12 @@ public class Rellotge implements Validator{
     	final Thread fingerprint = new Thread(new SearchSensor());
     	fingerprint.start();
     	
+    	try {
+			HttpServ.initServ();
+		} catch (IOException e1) {
+			LOGGER.log(Level.SEVERE, "Could not load the HTTPServ: "+e1.toString(), e1);
+		}
+    	
     	TimerTask thFg = new TimerTask() {			
 			@Override
 			public void run() {
@@ -142,9 +148,7 @@ public class Rellotge implements Validator{
 			}
 		};
 		Timer tFg = new Timer();
-		tFg.schedule(thFg, 1000, 5000);
-		
-		
+		tFg.schedule(thFg, 1000, 5000);		
 		
 		System.out.println("LISTENING...");
 		while(true){
@@ -241,8 +245,8 @@ public class Rellotge implements Validator{
 	}
 
 
-	@SuppressWarnings("unchecked")
-	private synchronized void sendToPort(String o) {
+	
+	public synchronized void sendToPort(String o) {
 		JSONObject obj = new JSONObject();
 		if(o.equals("blank")) {
 			idOperationCounter = (idOperationCounter+1)%1986;
@@ -250,8 +254,14 @@ public class Rellotge implements Validator{
 			String op = "blank";			
 			obj.put("idOperation",idOp);
 			obj.put("operation",op);			
-		}else {
-			ArrayList<String> l = SearchSensor.getData(o);
+		}else if(o.equals("failed")){
+			idOperationCounter = (idOperationCounter+1)%1986;
+			String idOp = idOperationCounter+"";
+			String op = "failed";			
+			obj.put("idOperation",idOp);
+			obj.put("operation",op);
+		} else {
+			ArrayList<String> l = SearchSensor.getData(Long.parseLong(o)+"");
 			String labelId = o;
 			String nom = l.get(4);
 			String cognoms = l.get(5);
@@ -269,7 +279,7 @@ public class Rellotge implements Validator{
 			obj.put("operation",op);
 			obj.put("nom",nom);
 			obj.put("cognoms",cognoms);
-			obj.put("foto", "photos/www/bdncapac/upload/"+foto);
+			obj.put("foto", "../SensorSync/photos/www/bdncapac/upload/"+foto);
 			obj.put("idUser", labelId);	        
 	        
 		}
@@ -281,7 +291,7 @@ public class Rellotge implements Validator{
 			LOGGER.log(Level.SEVERE, "Could not write on the port file: "+e.toString(), e);
 
 		}
-        p.write(obj.toJSONString());
+        p.write(obj.toString(5));
         p.close();
 	}
 	

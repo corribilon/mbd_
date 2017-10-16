@@ -41,18 +41,18 @@ public class DBRellotge extends MysqlManager {
 
 		// Get the data
 
-		String[] lineRead = res[i].split("/");
-		String date = lineRead[1];
-		String[] data = lineRead[0].split(";");
+		
+		String[] data = res[i].split(";");
 		String concept = data[0].replace("opt:", "");
-		String labelId = data[0].replace("iduser:", "");
+		String labelId = data[1].replace("iduser:", "").split("/")[0];
+		String date = data[1].replace("iduser:", "").split("/")[1];
 		HashMap<String, ArrayList<String>> mapa = SearchSensor.getMapa();
-		if (mapa != null) {
-			String idUser = mapa.get(labelId).get(0);
-			// Construct the sql
-			String sql = "INSERT INTO absentismo (`Matrícula`,`Data del concepte`, `Concepte`)VALUES(" + idUser + ",'"
-					+ date + "','" + concept + "')";
+		if (mapa != null) {			
 			try {
+				String idUser = mapa.get(labelId).get(0);
+				// Construct the sql
+				String sql = "INSERT INTO absentismo (`Matrícula`,`Data del concepte`, `Concepte`)VALUES(" + idUser + ",'"
+						+ date + "','" + concept + "')";
 				if (TestConnection.isUp()) {
 					Statement statement = connect.createStatement();
 					int resI = statement.executeUpdate(sql);
@@ -72,6 +72,9 @@ public class DBRellotge extends MysqlManager {
 				BufferManager.movementsFunction(BufferManager.PUT, res[i]);
 			} catch (SocketException e) {
 				LOGGER.log(Level.WARNING, "Error with the socket. Sending result back to the buffer: " + e.toString(), e);
+				BufferManager.movementsFunction(BufferManager.PUT, res[i]);
+			}catch(Exception e) {
+				LOGGER.log(Level.SEVERE, e.toString(), e);
 				BufferManager.movementsFunction(BufferManager.PUT, res[i]);
 			}
 		} else {

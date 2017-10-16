@@ -13,7 +13,8 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import common.EncDec;
 import common.MysqlManager;
@@ -49,20 +50,36 @@ public class Main {
 
 
 
+	
 	private void bulkResIntoFile(HashMap<String, ArrayList<String>> res) throws IOException {
 		File f = new File("localDB.ldb");
 		if(!f.exists()){
 			f.createNewFile();
 		}
-		PrintWriter pw = new PrintWriter(f);
+		
+		JSONArray a = new JSONArray();
+		
 		ArrayList<String> it = new ArrayList<String>(res.keySet());
-		String line = "";
+		
 		for (String key : it) {
-			line = res.get(key).get(2);
-			line = line + ";" + key + ";";
-			line = line + res.get(key).toString();			
-			pw.println(line);
+			
+			JSONObject obj = new JSONObject();
+			ArrayList<String> list = res.get(key);
+			obj.put("iduser", ""+list.get(0)+"");
+			obj.put("labelid", ""+list.get(1)+"");
+			obj.put("characterics", ""+list.get(2)+"");
+			obj.put("hash", ""+list.get(3)+"");
+			obj.put("nom", ""+list.get(4)+"");
+			obj.put("cognoms", ""+list.get(5)+"");
+			obj.put("foto", ""+list.get(6)+"");
+			
+			a.put(obj);
 		}
+		
+		System.out.println(a.toString());
+		
+		PrintWriter pw = new PrintWriter(f);
+		pw.write(a.toString(5));
 		pw.close();
 	}
 	

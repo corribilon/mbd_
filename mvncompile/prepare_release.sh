@@ -27,6 +27,7 @@ mkdir release/Rellotge
 cp target/rellotge.jar-jar-with-dependencies.jar release/Rellotge/scanner.jar
 cp config.rellotge.properties release/Rellotge/
 cp -r js release/Rellotge/
+cp -r imgs release/Rellotge/
 touch  release/Rellotge/buffer.bcs
 find src/rellotge/ -type f -not -name "*.java" | xargs -i cp {} release/Rellotge/
 mkdir release/Rellotge/timers
