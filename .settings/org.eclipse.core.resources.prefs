@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//examples/example_enroll.py=utf-8
 encoding//examples/example_search.py=utf-8
+encoding//release/Rellotge/search.py=utf-8
 encoding//src/enrollment/example_enroll.py=utf-8
 encoding//src/rellotge/search.py=utf-8
 encoding//src/sensorsync/deleteAll.py=utf-8
