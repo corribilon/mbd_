@@ -12,3 +12,10 @@ sudo apt-get install python-fingerprint --yes
 
 # Configure the autostart on reboot
 cat ./lxsession.autostart > /home/pi/.config/lxsession/LXDE-pi/autostart
+
+
+# Free the crontab
+echo "" >> mycron
+#install new cron file
+crontab mycron
+rm mycron

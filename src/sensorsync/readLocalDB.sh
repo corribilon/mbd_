@@ -9,7 +9,10 @@ python2 ./deleteAll.py
 
 
 jq -c '.[].characterics' localDB.ldb | while read i; do
-	if [[ $i != *"null"* ]]; then
-		python2 ./upload_characterics.py "$i"
+	if [[ $i != *"null"* ]]; then		
+		string=$i
+		string2=${string#"\""}
+		string2=${string2%"\""}		
+		python2 ./upload_characterics.py "$string2"
   	fi
 done

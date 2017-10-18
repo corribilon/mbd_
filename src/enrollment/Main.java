@@ -183,8 +183,7 @@ public class Main {
 			end = true;
 			error = true;
 			System.out.println("Error: " + s);
-		}
-		System.out.println("OUT: "+s);
+		}		
 	}
 
 	public static DBEnrollment getMM(){

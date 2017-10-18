@@ -23,3 +23,6 @@ echo "0 0 * * * sudo reboot" >> mycron
 #install new cron file
 crontab mycron
 rm mycron
+
+
+
