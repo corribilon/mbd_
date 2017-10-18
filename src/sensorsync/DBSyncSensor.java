@@ -64,4 +64,30 @@ public class DBSyncSensor extends MysqlManager {
 	}
 	
 	
+	
+	public ArrayList<String> getAbsentisme(){
+		String sql = "Select concepto FROM `01_tbl_absentismo_concepte_new` WHERE 1";
+		ArrayList<String> toRet = null;
+		try {
+			if (TestConnection.isUp()) {
+				Statement statement = connect.createStatement();
+				ResultSet rs = statement.executeQuery(sql);
+				boolean isValidRow = rs.first();
+				if(isValidRow) {
+					toRet = new ArrayList<String>();
+					do{						
+						String concepto = rs.getString("concepto")+"";
+						toRet.add(concepto);						
+					}while(rs.next());
+					
+				}
+			}
+		} catch (Exception e) {
+			LOGGER.log(Level.SEVERE, e.toString(), e);		
+			toRet = null;
+		}
+		return toRet;
+	}
+	
+	
 }

@@ -4,6 +4,7 @@ package sensorsync;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -24,6 +25,8 @@ import common.Tracer;
 
 public class Main {
 
+	private static final String ABSENTISME_FILE_PATH = "../Rellotge/absentisme.json";
+
 	private static final Logger LOGGER = Tracer.getLogger(Main.class);
 
 	static Properties prop;
@@ -41,8 +44,16 @@ public class Main {
 		HashMap<String,ArrayList<String>> res = mm.getDatabaseRes();
 		if(res!=null) {
 			try {
-				bulkResIntoFile(res);
-			} catch (IOException e) {
+				bulkResIntoFileLocalDB(res);
+			} catch (Exception e) {
+				LOGGER.log(Level.SEVERE, e.toString(), e);
+			}
+		}
+		ArrayList<String> resArr = mm.getAbsentisme();
+		if(resArr!=null) {
+			try {
+				bulkResIntoFileAbsentisme(resArr);
+			} catch (Exception e) {
 				LOGGER.log(Level.SEVERE, e.toString(), e);
 			}
 		}
@@ -51,7 +62,21 @@ public class Main {
 
 
 	
-	private void bulkResIntoFile(HashMap<String, ArrayList<String>> res) throws IOException {
+	private void bulkResIntoFileAbsentisme(ArrayList<String> resArr) throws FileNotFoundException {
+		JSONArray arr = new JSONArray();
+		for (String res : resArr) {
+			arr.put(res);
+		}
+		File f = new File(ABSENTISME_FILE_PATH);
+		PrintWriter pw = new PrintWriter(f);
+		pw.write(arr.toString(5));
+		pw.close();	
+	}
+
+
+
+
+	private void bulkResIntoFileLocalDB(HashMap<String, ArrayList<String>> res) throws IOException {
 		File f = new File("localDB.ldb");
 		if(!f.exists()){
 			f.createNewFile();
