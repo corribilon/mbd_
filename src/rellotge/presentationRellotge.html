@@ -114,6 +114,7 @@ var absentismeArray;
 		programTimeout(5000);
 		$("#greetings").hide();
 		$("#options").hide();
+		$("#confirm").hide();
 		$("#container").html("");
 		$("#container").show();
 
@@ -154,7 +155,7 @@ var absentismeArray;
 			$("#container").append(
 					"<div id='failed'>"+
 						"<div id='failedTxt'>"+
-							"Lectura incorrecte!"+
+							"Lectura incorrecta!"+
 						"</div>"+
 					"</div>");
 		}
@@ -204,7 +205,8 @@ var absentismeArray;
 			//Escondemos todo menos el container
 			$("#greetings").hide();
 			$("#options").hide();
-
+			$("#confirm").hide();
+			
 			//Ponemos el blank page
 			$("#container").html(blankPageHTML);
 			$("#container").show();
@@ -220,22 +222,44 @@ var absentismeArray;
 	}
 
 	function onSendOption(iduser, option) {
+		
 		programTimeout(3000);
 		$.ajax({
 			url : "http://localhost:9000/rellotge?idUser=" + iduser
 					+ "&optionSelected=" + option,
 			crossDomain : true
 		});
+		$("#confirm").hide();
 		$("#options").hide();
 		$("#greetings").show();
 
 	}
+	
+	
+	function onAskConfirm(iduser, option){
+		var opt = unescape(option);
+		programTimeout(5000);
+		$("#options").hide();
+		
+		$("#titleAbsentismeH1").text(opt);
+		
+		$('#yesConfirm').unbind('click');
+	    $("#yesConfirm").click(
+	    		function(){ 
+	    			
+	    			onSendOption(iduser,opt); 
+	    			}
+	    		);
+	    $("#confirm").show();
+	}
+	
 
 	function onShowOptions() {
 		programTimeout(10000);
 
 		$("#container").hide();
 		$("#greetings").hide();
+		$("#confirm").hide();
 		$("#options").show();
 		$("#options").html("");
 		
@@ -247,9 +271,9 @@ var absentismeArray;
 			if(i<arrayLength){				
 			    var str = absentismeArray[i];
 			    ops = ops.replace("__"+i+"__",
-						"<a class='optionCl' href=\"javascript:void(0);\" onclick='javascript:onSendOption("
+						"<a class='optionCl' href=\"javascript:void(0);\" onclick='javascript:onAskConfirm("
 								+ lastResult.idUser
-								+ ",\""+str+"\");'>"+str+"</a>"); 
+								+ ",\""+escape(str)+"\");'>"+str+"</a>"); 
 								
 			}else{
 				ops = ops.replace("__"+i+"__","");
@@ -406,6 +430,34 @@ h1{
 	
 }
 
+#confirm {
+	position:fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -200px; 
+    margin-left: -250px;
+	width: 500px;
+	height: 400px;
+	border-radius: 25px;
+	background-color: white;
+	display:none;
+	
+}
+
+#yesConfirm{
+	
+	margin-right:10px;
+
+	padding-left: 60px;
+	padding-right: 60px;
+	
+}
+#noConfirm{
+
+	padding-left: 60px;
+	padding-right: 60px;
+}
+
 #txtGreetings{
 	padding-left: 30%;
 	padding-top: 15%;
@@ -435,10 +487,10 @@ h1{
 	position:fixed;
     top: 50%;
     left: 50%;
-    margin-top: -140px; 
-    margin-left: -450px;
-	width: 900px;
-	height: 380px;
+    margin-top: -230px; 
+    margin-left: -550px;
+	width: 1100px;
+	height: 460px;
 	border-radius: 25px;
 	background-color: white;
 }
@@ -448,6 +500,8 @@ h1{
   	margin: 2% auto;
 	border: none;
 	margin-top: 0px;
+	border-spacing: 20px;
+   	border-collapse: separate;
 }
 
 #optionsTbl td{
@@ -465,6 +519,8 @@ h1{
 	
 }
 
+
+
 </style>
 </head>
 <body>
@@ -475,6 +531,20 @@ h1{
 <div id='greetings' style='display:none'>
 <div id='txtGreetings'>
 	<h1>Gràcies!</h1>
+</div>
+</div>
+<div id='confirm'>
+<div style='width: 85%; margin: 0 auto; padding-top:30px;'>
+	<h2>Segur que vols triar la opció? </h2>
+	<br />
+	<br />
+	<h1 style='font-weight: bolder;' id='titleAbsentismeH1'></h1>
+	<br />
+	<br />
+	<div style='border: 15px solid white; border-radius: 25px; background-color: white;padding-left:35px; padding-bottom:15px'>
+	<a id='yesConfirm' class='optionCl' href='javascript:void(0);' onclick="">Sí</a>
+	<a id='noConfirm' class='optionCl' href='javascript:void(0);' onclick="javascript:onShowOptions();">No</a>
+	</div>
 </div>
 </div>
 </body>
