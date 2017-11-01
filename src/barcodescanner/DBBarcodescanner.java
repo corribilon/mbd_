@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import common.BufferManager;
 import common.MysqlManager;
 import common.TestConnection;
 import common.Tracer;
@@ -31,7 +32,7 @@ public class DBBarcodescanner extends MysqlManager{
 		for (int i = 0; i < res.length; i++) {
 			arr = getArray(res, i);			
 			if(arr!=null){
-				barcode = res[i].split("@")[0];
+				barcode = res[i].split("/")[0];
 				idArticulo = arr[0];
 				numunidades = arr[4];
 				idpedido = arr[3];
@@ -42,23 +43,23 @@ public class DBBarcodescanner extends MysqlManager{
 										"SELECT `idbarcode` FROM `02_tbl_salidas` WHERE `idbarcode` = '"+barcode+"'"+
 									") LIMIT 1;";
 
-				System.out.println("UPD: "+sql);
+				LOGGER.log(Level.INFO,"UPD: "+sql);
 				try {
 					if(TestConnection.isUp()){
 						Statement statement = connect.createStatement();
 						resI = statement.executeUpdate(sql);
-						System.out.println("UPDATED ELEMENT:\t\t "+res[i] + "\t\t" +resI);
+						LOGGER.log(Level.INFO,"UPDATED ELEMENT:\t\t "+res[i] + "\t\t" +resI);
 					}else{
-						System.out.println("No Connection to DDBB. Sending result to the buffer.");
-						BarcodeScanner.movementsFunction(BarcodeScanner.PUT, res[i]);
+						LOGGER.log(Level.INFO,"No Connection to DDBB. Sending result to the buffer.");
+						BufferManager.movementsFunction(BarcodeScanner.PUT, res[i]);
 					}
 				} catch (Exception e) {
 					LOGGER.log(Level.INFO, "Error while pushing barcode to DDBB. Sending result to the buffer: "+e.toString(), e);
-					BarcodeScanner.movementsFunction(BarcodeScanner.PUT, res[i]);
+					BufferManager.movementsFunction(BarcodeScanner.PUT, res[i]);
 					
 				}				
 			}else{
-				System.out.println("IGNORING ELEMENT: \t\t "+res[i]);
+				LOGGER.log(Level.WARNING,"IGNORING ELEMENT: \t\t "+res[i]);
 			}		    
 		}
 	}
@@ -67,7 +68,7 @@ public class DBBarcodescanner extends MysqlManager{
 
 	private String[] getArray(String[] res, int i) {
 		
-		String[] splStr = res[i].split("@");
+		String[] splStr = res[i].split("/");
 		
 		String date = "";
 		if(splStr.length<=1){
@@ -90,9 +91,6 @@ public class DBBarcodescanner extends MysqlManager{
 		toRet[3] = lineRead.substring(14,19); //id del pedido
 		toRet[4] = lineRead.substring(19,23); // num elementos por caja
 		toRet[5] = date; // fecha de la lectura
-
-		
-		
 		
 		return toRet;
 	}

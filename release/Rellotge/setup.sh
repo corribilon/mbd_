@@ -25,5 +25,13 @@ crontab mycron
 rm mycron
 
 echo "Finish setup for Rellotge successfully!!"
-echo "Don't forget to change the configrellotge.properties file."
+echo ""
+
+echo "+-----------------------------+"
+echo "+ DONT FORGET!                +"
+echo "+-----------------------------+-----------------+"
+echo "| - Change the config.rellotge.properties file. |"
+echo "| - Change the presentationRellotge.html 'logo' |"
+echo "|     variable (At the beginning of the file).  |"
+echo "+-----------------------------------------------+"
 

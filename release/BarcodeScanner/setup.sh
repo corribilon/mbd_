@@ -17,7 +17,16 @@ then
 	crontab mycron
 	rm mycron
 	echo "Finish setup for BarcodeScanner successfully!!"
-	echo "Don't forget to change the configbarcodescanner.properties file."
+	echo ""
+	
+	echo "+-----------------------------+"
+	echo "+ DONT FORGET!                +"
+	echo "+-----------------------------+-----------------------+"
+	echo "|                                                     |"
+	echo "| - Change the config.barcodescanner.properties file. |"
+	echo "|                                                     |"
+	echo "+-----------------------------------------------------+"
+
 else
 	echo "Please change the url on the '/home/pi/Desktop/BarcodeScanner/lxsession.autostart' file."
 	echo "Then execute again the setup.sh file."	

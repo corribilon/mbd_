@@ -138,9 +138,11 @@ public class BufferManager {
 		if (res != null) {
 			for (int i = 0; i < res.length; i++) {
 				p.println(res[i]);
+				
 			}
 		}
 		p.close();
+		
 	}
 
 }

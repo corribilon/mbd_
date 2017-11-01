@@ -53,15 +53,16 @@ public class DBRellotge extends MysqlManager {
 				// Construct the sql
 				String sql = "INSERT INTO absentismo (`Matrícula`,`Data del concepte`, `Concepte`)VALUES(" + idUser + ",'"
 						+ date + "','" + concept + "')";
+				LOGGER.log(Level.INFO, "UPD: "+sql);
 				if (TestConnection.isUp()) {
 					Statement statement = connect.createStatement();
 					int resI = statement.executeUpdate(sql);
-					System.out.println("UPDATED ELEMENT:\t\t " + res[i] + "\t\t" + resI);
+					LOGGER.log(Level.INFO, "UPDATED ELEMENT:\t\t " + res[i] + "\t\t" + resI);
 					if (resI == 0) {
 						BufferManager.movementsFunction(BufferManager.PUT, res[i]);
 					}
 				} else {
-					System.out.println("No Connection to DDBB. Sending result to the buffer.");
+					LOGGER.log(Level.INFO,"No Connection to DDBB. Sending result to the buffer.");
 					BufferManager.movementsFunction(BufferManager.PUT, res[i]);
 				}
 			} catch (CommunicationsException e) {

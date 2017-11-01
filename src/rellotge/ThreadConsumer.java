@@ -16,19 +16,14 @@ public class ThreadConsumer extends TimerTask{
 
 	@Override
 	public void run() {
-		Watchdog.imAlive("consumer");		
-		
-				
-		String[] res = null;	
-		
+		Watchdog.imAlive("consumer");				
+		String[] res = null;		
 		DBRellotge mm = Rellotge.getMM();
-		res = (String[])BufferManager.movementsFunction(BufferManager.RETRIEVEALL, null);
-		
+		res = (String[])BufferManager.movementsFunction(BufferManager.RETRIEVEALL, null);		
 		if(res!=null){
 			if(mm!=null){
 				try {
-					mm.updateStatus(res);
-					
+					mm.updateStatus(res);					
 				} catch (ParseException e) {
 					//Should never fall in this exception
 		        	LOGGER.log(Level.WARNING, "Error parsing the date time. "+e.toString(), e);

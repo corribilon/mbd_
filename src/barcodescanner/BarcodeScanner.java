@@ -4,7 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
-import java.util.ArrayList;
+
 import java.util.Properties;
 
 import java.util.Timer;
@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import org.jnativehook.GlobalScreen;
 import org.jnativehook.NativeHookException;
 
+import common.BufferManager;
 import common.EncDec;
 import common.KeyLog;
 import common.MysqlManager;
@@ -38,9 +39,6 @@ public class BarcodeScanner implements Validator{
 	
 	static DBBarcodescanner mm = null;
 	
-	
-	private static ArrayList<String> movements;
-	
 	public final static int PUT = 1;
 	public final static int RETRIEVEALL = 2;
 	
@@ -48,7 +46,9 @@ public class BarcodeScanner implements Validator{
 
 	public static void main(String[] args) throws Exception {
 		
-		ThreadConsumer.loadBuffer();
+		Tracer.setup();
+		
+		BufferManager.loadBuffer();
 		// Get the logger for "org.jnativehook" and set the level to off.
         Logger logger = Logger.getLogger(GlobalScreen.class.getPackage().getName());
         logger.setLevel(Level.OFF);
@@ -126,31 +126,6 @@ public class BarcodeScanner implements Validator{
 		}
 		
 	}
-
-
-	public static synchronized Object movementsFunction(int order, Object params){		
-		if(order == PUT){
-			getMov().add((String)params);
-			return null;
-		}
-		if(order == RETRIEVEALL){
-			int s = getMov().size();
-			if(s<=0)return null;
-			String[] toRet = new String[s];
-			for (int i = 0; i < s; i++)	toRet[i] = getMov().get(i);
-			getMov().clear();
-			return toRet;			
-		}		
-		return null;		
-	}
-	
-	
-	private static ArrayList<String> getMov(){
-		if(movements==null){
-			movements = new ArrayList<String>();
-		}
-		return movements;
-	}
 	
 	
 	public static Properties getProperties() {
@@ -178,13 +153,17 @@ public class BarcodeScanner implements Validator{
 			return false;
 		}
 		// Must be parseable into a long variable
-		try {
-			Long.parseLong((String) o);
-		} catch (NumberFormatException e) {
-			// Is not a number;
-			return false;
+		String num = (String)o;
+		int l = num.length();
+		boolean isValid = l==23;
+		for (int i = 0; i < l; i++) {
+			try {
+				Integer.parseInt(num.charAt(i) + "");
+			} catch (NumberFormatException e) {
+				isValid = false;
+			}
 		}
-		return true;
+		return isValid;
 	}
 
 }

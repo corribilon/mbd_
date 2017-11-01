@@ -4,10 +4,29 @@
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 <script type="text/javascript">
 
+
+/**
+ * CONFIG PARAMETERS
+ *******************************************************************************************/
+
+//Entrades = 0 para logo entrades, 1 para logo sortides
+var logo = 0;
+
+/*******************************************************************************************
+ * END CONFIG PARAMETERS
+ */
+
+var file = "";
+if(logo == 0){
+	file='logohalfEntrades.jpg'
+}else{
+	file='logohalfSortides.jpg'
+}
+
 var lastId = -1;
 var lastTimeoutId = -1;
 var lastResult=null;
-var blankPageHTML ="<div id='blankPage'><div id='clock'></div></div>";
+var blankPageHTML ="<div id='blankPage' style='background-image: url(\"imgs/"+file+"\");'><div id='clock'></div></div>";
 var entryHTML = "<div id='entry'>"+
 					"<div class='leftPart'>"+
 						"<div class='upperTab'>"+
@@ -315,7 +334,7 @@ body {
     margin-top: -210px; 
     margin-left: -320px; 
     
-	background-image: url("imgs/logohalf.jpg");
+	
 	background-repeat: no-repeat;
 	background-color: white;
 	background-position: center center; 
@@ -327,8 +346,8 @@ body {
 
 #clock {
 	font-size: 50px;
-	padding-top: 20px;
-	padding-top: 50px;
+	padding-top: 120px;
+	
 	padding-left: 25px;
 	
 }
