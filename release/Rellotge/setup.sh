@@ -24,5 +24,6 @@ echo "0 0 * * * sudo reboot" >> mycron
 crontab mycron
 rm mycron
 
-
+echo "Finish setup for Rellotge successfully!!"
+echo "Don't forget to change the configrellotge.properties file."
 
