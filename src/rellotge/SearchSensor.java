@@ -72,8 +72,8 @@ public class SearchSensor implements Runnable {
 					}
 				} else {
 					try {
-						Thread.currentThread().wait(10000);
-					} catch (InterruptedException e) {
+						Thread.sleep(10000);
+					} catch (Exception e) {
 						LOGGER.log(Level.WARNING, "Could not wait on the sync time. " + e.toString(), e);
 					}
 				}
